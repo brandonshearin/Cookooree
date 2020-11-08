@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>976240481687-s1nd7b16s9brkduu5beldqnbnqh9e1b1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.976240481687-s1nd7b16s9brkduu5beldqnbnqh9e1b1</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCrzGkIHUtlqVdvYF0iQaEX3QmZd-K2ilg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>976240481687</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>brandon.Cookooree</string>
+	<key>PROJECT_ID</key>
+	<string>cookooree-2e1e2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cookooree-2e1e2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:976240481687:ios:6e33fc5ef17fbac619a0d2</string>
+	<key>DATABASE_URL</key>
+	<string>https://cookooree-2e1e2.firebaseio.com</string>
+</dict>
+</plist>
