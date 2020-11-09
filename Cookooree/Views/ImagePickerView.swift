@@ -12,48 +12,51 @@ import FirebaseUI
 
 struct ImagePickerView: View {
     
-    @State var shown = false
-    @State var selectedImage = UIImage()
+    @State private var showImagePicker = false
+    @State private var showActionSheet = false
     
-    @StateObject var viewModel: RecipeViewModel
+    @Binding var selectedImage: UIImage?
+    
+    @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
     var body: some View {
         VStack {
             Button(action: {
-                self.shown.toggle()
+                self.showActionSheet.toggle()
             }) {
                 Image(systemName: "camera")
                     .foregroundColor(.black)
                     .imageScale(.large)
             }
-            .sheet(isPresented: $shown) {
-                ImagePicker(sourceType: .camera, selectedImage: $selectedImage.didSet { val in
-                    viewModel.selectedImage = selectedImage
-                })
+            .actionSheet(isPresented: $showActionSheet){
+                ActionSheet(title: Text("Add a photo"),
+                            buttons: [
+                                .default(Text("Choose from Library")){
+                                    self.sourceType = .photoLibrary
+                                    self.showImagePicker = true
+
+                                },
+                                .default(Text("Take a photo")){
+                                    self.sourceType = .camera
+                                    self.showImagePicker = true
+                                },
+                                .cancel()
+                            ])
+            }
+            .sheet(isPresented: $showImagePicker) {
+                ImagePicker(sourceType: sourceType, selectedImage: $selectedImage)
             }
         }
-        
-        
     }
-}
-
-extension Binding {
-    func didSet(execute: @escaping (Value) ->Void) -> Binding {
-        return Binding(
-            get: {
-                return self.wrappedValue
-            },
-            set: {
-                self.wrappedValue = $0
-                execute($0)
-            }
-        )
-    }
+    
 }
 
 struct ImagePicker_Previews: PreviewProvider {
+    
+    @State static var img: UIImage?
+    
     static var previews: some View {
-        ImagePickerView(viewModel: RecipeViewModel())
+        ImagePickerView(selectedImage: $img)
     }
 }
 
@@ -61,7 +64,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     
     var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
-    @Binding var selectedImage: UIImage
+    @Binding var selectedImage: UIImage?
     @Environment(\.presentationMode) private var presentationMode
     
     func makeCoordinator() -> Coordinator {

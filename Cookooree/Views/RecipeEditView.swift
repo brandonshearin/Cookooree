@@ -37,7 +37,7 @@ struct RecipeEditView: View {
                 
                 HStack(alignment: .top) {
                     FormInput(title: "Title", placeholder: "Name of recipe", field: $viewModel.recipe.name)
-                    ImagePickerView(viewModel: viewModel)
+                    ImagePickerView(selectedImage: $viewModel.selectedImage)
                         .padding(.trailing)
                     
                 }
@@ -59,21 +59,21 @@ struct RecipeEditView: View {
             }
             .padding(.vertical)
             .navigationBarTitle(mode == .new ? "New Recipe" : viewModel.recipe.name)
-            .navigationBarTitleDisplayMode(mode == .new ? .inline : .large)
+            .navigationBarTitleDisplayMode(.inline )
             .navigationBarItems(leading:
-                                    Button(action: {self.handleCancelTapped()}){
-                                        Text("Cancel")
+                                    Button("Cancel"){
+                                        self.handleCancelTapped()
                                     },
-                                trailing: Button(action: {self.handleDoneTapped()}){
-                                    Text(mode == .new ? "Save" : "Done")
+                                trailing: Button(mode == .new ? "Save": "Done") {
+                                    self.handleDoneTapped()
                                 }
                                 .disabled(!viewModel.modified))
-            .actionSheet(isPresented: $presentActionSheet) {
-                ActionSheet(title: Text("Are you sure?"), buttons: [
-                    .destructive(Text("Delete Recipe"), action: { self.handleDeleteTapped() }),
-                    .cancel()
-                ])
-            }
+//            .actionSheet(isPresented: $presentActionSheet) {
+//                ActionSheet(title: Text("Are you sure?"), buttons: [
+//                    .destructive(Text("Delete Recipe"), action: { self.handleDeleteTapped() }),
+//                    .cancel()
+//                ])
+//            }
         }
     }
     
