@@ -32,28 +32,49 @@ struct RecipeEditView: View {
     var completionHandler: ((Result<Action, Error>) -> Void)?
     
     var body: some View {
+        
+        //        let ingredientsList = Binding<String>(
+        //            get: {
+        //                var listAsString = ""
+        //                for ingredient in self.viewModel.recipe.ingredients {
+        //                    listAsString += ingredient + "\n"
+        //                }
+        //                return listAsString
+        //            },
+        //            set: {
+        //                self.viewModel.ingredients = $0
+        //            }
+        //            )
         NavigationView {
-            VStack {
-                
-                HStack(alignment: .top) {
-                    FormInput(title: "Title", placeholder: "Name of recipe", field: $viewModel.recipe.name)
-                    ImagePickerView(selectedImage: $viewModel.selectedImage)
-                        .padding(.trailing)
+            ScrollView {
+                VStack {
+                    HStack(alignment: .top) {
+                        FormInput(title: "Title", placeholder: "Name of recipe", field: $viewModel.recipe.name)
+                        ImagePickerView(selectedImage: $viewModel.selectedImage)
+                            .padding(.trailing)
+                        
+                    }
+                    FormInput(title: "Description", placeholder: "Additional details (optional)", field: $viewModel.recipe.description)
                     
-                }
-                FormInput(title: "Description", placeholder: "Additional details (optional)", field: $viewModel.recipe.description)
-                
-                FormInput(title: "Ingredients", placeholder: "One ingredient per line", field: $viewModel.ingredients, inputType: .area)
-                FormInput(title: "Directions", placeholder: "", field: $viewModel.recipe.directions, inputType: .area)
-                
-                FormInput(title: "Yield", placeholder: "How many servings", field: $viewModel.recipe.servings)
-                FormInput(title: "Duration", placeholder: "Cooking time", field: $viewModel.recipe.duration)
-                
-                Spacer()
-                if mode == .edit {
-                    Section {
-                        Button("Delete recipe") { self.presentActionSheet.toggle() }
-                            .foregroundColor(.red)
+                    FormInput(title: "Ingredients", placeholder: "One ingredient per line", field: $viewModel.ingredients, inputType: .area)
+                        .onAppear {
+                            var listAsString = ""
+                            for ingredient in self.viewModel.recipe.ingredients {
+                                listAsString += ingredient + "\n"
+                            }
+                            viewModel.ingredients = listAsString
+                        }
+                    FormInput(title: "Directions", placeholder: "", field: $viewModel.recipe.directions, inputType: .area)
+                    FormInput(title: "Total Time", placeholder: "Cooking time", field: $viewModel.recipe.duration)
+                    FormInput(title: "Yield", placeholder: "How many servings", field: $viewModel.recipe.servings)
+                    FormInput(title: "Adapted From", placeholder: "Source", field: $viewModel.recipe.source)
+                    
+                    Spacer()
+                    if mode == .edit {
+                        Section {
+                            Button("Delete recipe") { self.presentActionSheet.toggle() }
+                                .foregroundColor(.red)
+                        }
                     }
                 }
             }
@@ -68,12 +89,12 @@ struct RecipeEditView: View {
                                     self.handleDoneTapped()
                                 }
                                 .disabled(!viewModel.modified))
-//            .actionSheet(isPresented: $presentActionSheet) {
-//                ActionSheet(title: Text("Are you sure?"), buttons: [
-//                    .destructive(Text("Delete Recipe"), action: { self.handleDeleteTapped() }),
-//                    .cancel()
-//                ])
-//            }
+            //            .actionSheet(isPresented: $presentActionSheet) {
+            //                ActionSheet(title: Text("Are you sure?"), buttons: [
+            //                    .destructive(Text("Delete Recipe"), action: { self.handleDeleteTapped() }),
+            //                    .cancel()
+            //                ])
+            //            }
         }
     }
     
@@ -132,7 +153,7 @@ struct FormInput: View {
             
             Divider()
         }
-        .padding(.horizontal)
+        .padding([.horizontal,.bottom])
         .ignoresSafeArea(.keyboard)
     }
 }
@@ -156,6 +177,7 @@ struct TextArea: View {
             .foregroundColor(Color.primary.opacity(0.25))
             .padding(EdgeInsets(top: 0, leading: 4, bottom: 7, trailing: 0))
         }
+        .frame(minHeight: 150)
         
     }
 }
