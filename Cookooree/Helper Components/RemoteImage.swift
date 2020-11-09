@@ -1,83 +1,38 @@
-//
-//  RemoteImage.swift
-//  Cookooree
-//
-//  Created by Brandon Shearin on 10/25/20.
-//
-
+import Combine
 import SwiftUI
 
+
 struct RemoteImage: View {
-    
-    private enum LoadState {
-        case loading, success, failure
+    @ObservedObject var url: LoadUrlImage
+
+    init(url: String) {
+        self.url = LoadUrlImage(imageURL: url)
     }
-    
-    private class Loader: ObservableObject {
-        var data = Data()
-        var state = LoadState.loading
-        
-        init(url: String){
-            guard let parsedURL = URL(string: url) else {
-                fatalError("Invalid URL: \(url)")
-            }
-            
-            URLSession.shared.dataTask(with: parsedURL){ data, response, error in
-                if let data = data, data.count > 0 {
-                    self.data = data
-                    self.state = .success
-                } else {
-                    self.state = .failure
-                }
-                
-                DispatchQueue.main.async {
-                    self.objectWillChange.send()
-                }
-                
-            }.resume()
-        }
-    }
-    
-    @StateObject private var loader: Loader
-    var loading: Image
-    var failure: Image
-    
-    init(url: String, loading: Image = Image(systemName: "photo"), failure: Image = Image(systemName: "multiply.circle")){
-        _loader = StateObject(wrappedValue: Loader(url: url))
-        self.loading = loading
-        self.failure = failure
-    }
-    
-    private func selectImage() -> Image {
-        switch loader.state {
-        case .loading:
-            return loading
-        case .failure:
-            return failure
-        default:
-            if let image = UIImage(data: loader.data){
-                return Image(uiImage: image)
-            } else {
-                return failure
-            }
-        }
-    }
-    
+
     var body: some View {
-        if loader.state == .loading {
-            selectImage()
-                .opacity(0)
-        }else {
-            selectImage()
-                .resizable()
-        }
-       
+          Image(uiImage: UIImage(data: self.url.data) ?? UIImage())
+              .resizable()
+              .clipped()
     }
 }
 
-struct RemoteImage_Previews: PreviewProvider {
-    static var previews: some View {
-        RemoteImage(url: "https://www.hackingwithswift.com/img/app-store@2x.png")
-            .frame(width: 200, height: 200)
+class LoadUrlImage: ObservableObject {
+    @Published var data = Data()
+    init(imageURL: String) {
+        let cache = URLCache.shared
+        let request = URLRequest(url: URL(string: imageURL)!, cachePolicy: URLRequest.CachePolicy.returnCacheDataElseLoad, timeoutInterval: 60.0)
+        if let data = cache.cachedResponse(for: request)?.data {
+            self.data = data
+        } else {
+            URLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
+                if let data = data, let response = response {
+                let cachedData = CachedURLResponse(response: response, data: data)
+                                    cache.storeCachedResponse(cachedData, for: request)
+                    DispatchQueue.main.async {
+                        self.data = data
+                    }
+                }
+            }).resume()
+        }
     }
 }

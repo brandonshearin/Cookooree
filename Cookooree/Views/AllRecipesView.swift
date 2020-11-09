@@ -67,6 +67,7 @@ struct SettingsButton: View {
             Image(systemName: "gear")
                 .imageScale(.large)
                 .foregroundColor(.black)
+                .padding([.vertical,.leading])
         }
     }
 }
@@ -81,6 +82,7 @@ struct GridListToggle: View {
             Image(systemName: image)
                 .imageScale(.large)
                 .foregroundColor(.black)
+                .padding([.vertical,.leading])
         }
     }
 }

@@ -32,19 +32,6 @@ struct RecipeEditView: View {
     var completionHandler: ((Result<Action, Error>) -> Void)?
     
     var body: some View {
-        
-        //        let ingredientsList = Binding<String>(
-        //            get: {
-        //                var listAsString = ""
-        //                for ingredient in self.viewModel.recipe.ingredients {
-        //                    listAsString += ingredient + "\n"
-        //                }
-        //                return listAsString
-        //            },
-        //            set: {
-        //                self.viewModel.ingredients = $0
-        //            }
-        //            )
         NavigationView {
             ScrollView {
                 VStack {
