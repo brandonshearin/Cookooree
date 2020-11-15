@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RecipeGridView: View {
     
-    var recipes: [Recipe]
+    var recipes: [FRecipe]
     
     let columns = [
         GridItem(.flexible(), spacing: 3),
@@ -46,7 +46,7 @@ struct RecipeGridView_Previews: PreviewProvider {
 
 struct GridTile: View {
     
-    var recipe: Recipe
+    var recipe: FRecipe
     
     var body: some View {
         GeometryReader { gr in

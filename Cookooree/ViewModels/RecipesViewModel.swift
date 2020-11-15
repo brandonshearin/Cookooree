@@ -10,7 +10,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class Recipe: Identifiable, Codable {
+class FRecipe: Identifiable, Codable {
     @DocumentID var id: String?
     @ServerTimestamp var createdAt: Timestamp?
     
@@ -48,7 +48,7 @@ class Recipe: Identifiable, Codable {
 }
 
 class RecipesViewModel: ObservableObject {
-    @Published var recipes = [Recipe]()
+    @Published var recipes = [FRecipe]()
     
     private var db = Firestore.firestore()
     
@@ -75,8 +75,8 @@ class RecipesViewModel: ObservableObject {
                     return
                 }
                 
-                self.recipes = documents.compactMap{ queryDocumentSnapshot -> Recipe? in
-                    return try? queryDocumentSnapshot.data(as: Recipe.self)
+                self.recipes = documents.compactMap{ queryDocumentSnapshot -> FRecipe? in
+                    return try? queryDocumentSnapshot.data(as: FRecipe.self)
                 }
             }
     }

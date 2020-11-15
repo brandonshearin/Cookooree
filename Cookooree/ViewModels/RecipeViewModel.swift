@@ -15,7 +15,7 @@ class RecipeViewModel: ObservableObject {
     
     @Published var user: User?
     
-    @Published var recipe: Recipe
+    @Published var recipe: FRecipe
     @Published var modified = false
     
     @Published var ingredients: String = "" {
@@ -29,7 +29,7 @@ class RecipeViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init(recipe: Recipe = Recipe(name: "", duration: "", servings: "")) {
+    init(recipe: FRecipe = FRecipe(name: "", duration: "", servings: "")) {
         self.recipe = recipe
         self.$recipe
             .dropFirst()
@@ -43,7 +43,7 @@ class RecipeViewModel: ObservableObject {
     private var db = Firestore.firestore()
     private var storage = Storage.storage()
     
-    private func addRecipe(_ recipe: Recipe){
+    private func addRecipe(_ recipe: FRecipe){
         do {
             recipe.userId = user?.uid
             let _ = try db.collection("recipes").addDocument(from: recipe)
@@ -52,7 +52,7 @@ class RecipeViewModel: ObservableObject {
         }
     }
     
-    private func updateRecipe(_ recipe: Recipe) {
+    private func updateRecipe(_ recipe: FRecipe) {
         if let documentId = recipe.id {
             do {
                 try db.collection("recipes").document(documentId).setData(from: recipe)
@@ -73,7 +73,7 @@ class RecipeViewModel: ObservableObject {
         }
     }
     
-    private func updateOrAdd(_ recipe: Recipe) {
+    private func updateOrAdd(_ recipe: FRecipe) {
         if let id = recipe.id {
             if let selectedImage = selectedImage {
                 uploadPhoto(selectedImage: selectedImage, path: id ) {

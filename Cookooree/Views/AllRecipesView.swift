@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-
-let testData = [
-    Recipe(name: "Cheeseburgers", duration: "", servings:""),
-    Recipe(name: "Spaghetti and Meatballs", duration: "", servings:""),
-    Recipe(name: "Chicken Quesdillas", duration: "", servings:"")
-]
-
 struct AllRecipesView: View {
     enum mode {
         case asGrid, asList
@@ -27,6 +20,7 @@ struct AllRecipesView: View {
     
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
+        
     }
     
     var body: some View {

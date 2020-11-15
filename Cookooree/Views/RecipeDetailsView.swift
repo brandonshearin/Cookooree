@@ -11,7 +11,7 @@ struct RecipeDetailsView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    var recipe: Recipe
+    var recipe: FRecipe
     
     @State private var isEditing = false
     
@@ -57,7 +57,7 @@ struct RecipeDetailsView: View {
 
 struct RecipeDetailsView_Previews: PreviewProvider {
     
-    static var demoRecipe = Recipe(name: "Meatballs", duration: "15 mins", servings: "3 servings",description: "Very yummy", ingredients: ["pork", "beef", "breadcrumbs"], directions: "Do all the things.  And then do some more.  And keep adding that and add this.  Then bake for a little while.  Then add some sauce.", source: "Brandon's Fabulous Cookbook")
+    static var demoRecipe = FRecipe(name: "Meatballs", duration: "15 mins", servings: "3 servings",description: "Very yummy", ingredients: ["pork", "beef", "breadcrumbs"], directions: "Do all the things.  And then do some more.  And keep adding that and add this.  Then bake for a little while.  Then add some sauce.", source: "Brandon's Fabulous Cookbook")
     
     static var previews: some View {
         NavigationView {
