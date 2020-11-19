@@ -9,32 +9,41 @@ import SwiftUI
 
 struct RecipeDetailsView: View {
     
+    @ObservedObject var recipe: Recipe
+
     @Environment(\.presentationMode) var presentationMode
-    
-    var recipe: FRecipe
-    
+    @EnvironmentObject var dataController: DataController
+        
     @State private var isEditing = false
+    
+    init(recipe: Recipe){
+        _recipe = ObservedObject(wrappedValue: recipe)
+    }
     
     var body: some View {
         ZStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 32) {
-                    RecipeHeading(name: recipe.name, duration: recipe.duration, servings: recipe.servings)
-                    if recipe.pictureDownloadURL != "" {
+                    RecipeHeading(
+                        name: recipe.recipeName,
+                        duration: recipe.recipeDuration,
+                        servings: recipe.recipeServings)
+                    if let uiImage = UIImage(data: recipe.recipeImage) {
                         GeometryReader { geo in
-                            RemoteImage(url: recipe.pictureDownloadURL)
-                                .aspectRatio(contentMode: .fill)
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
                                 .frame(height: geo.size.width)
                                 .cornerRadius(10)
                         }
                         .clipped()
                         .aspectRatio(contentMode: .fit)
                     }
-                    Text(recipe.description)
+                    Text(recipe.recipeDetail)
                         .font(.body)
-                    DetailView(heading: "Ingredients", content: recipe.ingredients)
-                    DetailView(heading: "Directions", content: [recipe.directions])
-                    DetailView(heading: "Source", content: [recipe.source])
+                    DetailView(heading: "Ingredients", content: recipe.recipeIngredients)
+                    DetailView(heading: "Directions", content: [recipe.recipeDirections])
+                    DetailView(heading: "Source", content: [recipe.recipeSource])
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -45,25 +54,26 @@ struct RecipeDetailsView: View {
             }
         }
         .sheet(isPresented: $isEditing) {
-            RecipeEditView(viewModel: RecipeViewModel(recipe: recipe), mode: .edit) { result in
-                if case .success(let action) = result, action == .delete {
-                    self.presentationMode.wrappedValue.dismiss()
-                }
-                
-            }
+            RecipeEditView(recipe: recipe, mode: Mode.edit)
+                .environmentObject(dataController)
+//            { result in
+//                if case .success(let action) = result, action == .delete {
+//                    self.presentationMode.wrappedValue.dismiss()
+//                }
+//            }
         }
     }
 }
 
 struct RecipeDetailsView_Previews: PreviewProvider {
     
-    static var demoRecipe = FRecipe(name: "Meatballs", duration: "15 mins", servings: "3 servings",description: "Very yummy", ingredients: ["pork", "beef", "breadcrumbs"], directions: "Do all the things.  And then do some more.  And keep adding that and add this.  Then bake for a little while.  Then add some sauce.", source: "Brandon's Fabulous Cookbook")
+    static var dataController = DataController.preview
     
     static var previews: some View {
-        NavigationView {
-            RecipeDetailsView(recipe: demoRecipe)
-                .environmentObject(User())
-        }
+        
+            RecipeDetailsView(recipe: Recipe.example)
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+                .environmentObject(dataController)
         
     }
 }

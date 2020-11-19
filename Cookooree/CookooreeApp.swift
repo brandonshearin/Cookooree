@@ -26,22 +26,26 @@ struct CookooreeApp: App {
     
     @StateObject var dataController: DataController
     
-    var u: User
+//    var u: User
     
     init() {
         let dataController = DataController()
         _dataController = StateObject(wrappedValue: dataController)
         
-        FirebaseApp.configure()
-        u = User()
+//        FirebaseApp.configure()
+//        u = User()
+    }
+    
+    func save(_ note: Notification) {
+        dataController.save()
     }
     
     var body: some Scene {
         WindowGroup {
             AllRecipesView()
-                .environmentObject(u)
                 .environment(\.managedObjectContext, dataController.container.viewContext)
                 .environmentObject(dataController)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification), perform: save)
         }
     }
     

@@ -12,28 +12,60 @@ struct AllRecipesView: View {
         case asGrid, asList
     }
     
-    @ObservedObject var recipesVM = RecipesViewModel()
+    @EnvironmentObject var dataController: DataController
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
     @State private var presentAddRecipeSheet = false
     @State private var presentation: mode = .asGrid
     
-    @EnvironmentObject var user: User
+    let recipes: FetchRequest<Recipe>
     
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
-        
+        recipes = FetchRequest<Recipe>(
+            entity: Recipe.entity(),
+            sortDescriptors: [NSSortDescriptor(keyPath: \Recipe.creationDate, ascending: false)])
     }
     
     var body: some View {
         NavigationView {
             ZStack {
                 if presentation == .asGrid {
-                    RecipeGridView(recipes: recipesVM.recipes)
+                    let columns = [
+                        GridItem(.flexible(), spacing: 3),
+                        GridItem(.flexible(), spacing: 3),
+                        GridItem(.flexible(), spacing: 3)
+                    ]
+                    ScrollView {
+                        LazyVGrid(columns: columns, alignment: .center, spacing: 3, pinnedViews: [.sectionHeaders]){
+                            
+                            ForEach(recipes.wrappedValue) { recipe in
+                                NavigationLink(destination: RecipeDetailsView(recipe: recipe)
+                                ) {
+                                    GridTile(recipe: recipe)
+                                }
+                                
+                            }
+                        }
+                    }
                 } else {
-                    RecipeListView(recipes: recipesVM.recipes)
+                    List {
+                        ForEach(recipes.wrappedValue) { recipe in
+                            NavigationLink(destination: RecipeDetailsView(recipe: recipe)){
+                                RecipeRowView(recipe: recipe)
+                            }}
+                            .listStyle(PlainListStyle())
+                    }
+                    
+                    
                 }
-                
                 FloatingActionButton() {
                     self.presentAddRecipeSheet.toggle()
+                    //                    dataController.deleteAll()
+                    //                    try? dataController.createSampleData()
+                }
+                .sheet(isPresented: $presentAddRecipeSheet){
+                    RecipeEditView()
                 }
             }
             .navigationBarTitle("cookooree", displayMode: .inline)
@@ -45,12 +77,12 @@ struct AllRecipesView: View {
                                         self.presentation = .asList
                                     }
                                 })
-            .sheet(isPresented: $presentAddRecipeSheet){
-                RecipeEditView()
-            }
+            
+            
             
         }
     }
+    
 }
 
 struct SettingsButton: View {
@@ -59,6 +91,7 @@ struct SettingsButton: View {
     var body: some View {
         Button(action: {self.action()}){
             Image(systemName: "gear")
+                .resizable()
                 .imageScale(.large)
                 .foregroundColor(.black)
                 .padding([.vertical,.leading])
@@ -82,10 +115,60 @@ struct GridListToggle: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static var dataController = DataController.preview
+    
     static var previews: some View {
         Group {
             AllRecipesView()
-                .environmentObject(User())
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+                .environmentObject(dataController)
+        }
+    }
+}
+
+struct GridTile: View {
+    
+    @ObservedObject var recipe: Recipe
+    
+    var body: some View {
+        GeometryReader { gr in
+            if let uiImage = UIImage(data: recipe.recipeImage) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height:gr.size.width)
+            } else {
+                Rectangle()
+                    .foregroundColor(.random)
+                    .overlay(
+                        Text(recipe.recipeName)
+                            .font(Font.custom("Barlow", size: 12))
+                            .foregroundColor(.black)
+                    )
+                    .frame(height:gr.size.width)
+            }
+        }
+        .clipped()
+        .aspectRatio(1, contentMode: .fit)
+    }
+}
+
+struct RecipeRowView: View {
+    
+    @ObservedObject var recipe: Recipe
+    
+    var body: some View {
+        HStack {
+            Text(recipe.recipeName)
+            Spacer()
+            if let uiImage = UIImage(data: recipe.recipeImage){
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 32, height: 32)
+                    .cornerRadius(3)
+                    .padding([.vertical, .trailing], 10)
+            }
         }
     }
 }
