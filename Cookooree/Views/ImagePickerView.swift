@@ -7,8 +7,6 @@
 
 import SwiftUI
 import UIKit
-import FirebaseStorage
-import FirebaseUI
 
 struct ImagePickerView: View {
     
