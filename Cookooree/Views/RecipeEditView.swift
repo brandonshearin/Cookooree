@@ -18,26 +18,16 @@ enum Action {
     case cancel
 }
 
-class NewRecipe: ObservableObject {
-    
-    var recipe: Recipe
-    
-    init(recipe: Recipe) {
-        self.recipe = recipe
-    }
-}
-
 struct RecipeEditView: View {
     
     var recipe: Recipe?
-
-    @Environment(\.presentationMode) private var presentationMode
-
-    @EnvironmentObject var dataController: DataController
-    @Environment(\.managedObjectContext) var managedObjectContext
-
     let mode: Mode
     var completionHandler: ((Result<Action, Error>) -> Void)?
+    
+    @Environment(\.presentationMode) private var presentationMode
+    
+    @EnvironmentObject var dataController: DataController
+    @Environment(\.managedObjectContext) var managedObjectContext
     
     @State private var presentActionSheet = false
     
@@ -50,6 +40,10 @@ struct RecipeEditView: View {
     @State private var directions: String
     @State private var source: String
     
+    @State private var image: UIImage
+    
+    @State private var ingredientsListStr: String
+    
     init() {
         mode = .new
         _name = State(wrappedValue: "")
@@ -60,11 +54,15 @@ struct RecipeEditView: View {
         _directions = State(wrappedValue: "")
         _source = State(wrappedValue: "")
         _ingredientsListStr = State(wrappedValue: "")
+        _image = State(wrappedValue: UIImage())
     }
     
-    init(recipe: Recipe, mode: Mode = .new) {
+    init(recipe: Recipe,
+         mode: Mode = .new,
+         completion: ((Result<Action, Error>) -> Void)?) {
         self.mode = mode
         self.recipe = recipe
+        self.completionHandler = completion
         
         _name = State(wrappedValue: recipe.recipeName)
         _servings = State(wrappedValue: recipe.recipeServings)
@@ -74,6 +72,8 @@ struct RecipeEditView: View {
         _directions = State(wrappedValue: recipe.recipeDirections)
         _source = State(wrappedValue: recipe.recipeSource)
         
+        _image = State(wrappedValue: UIImage(data: recipe.recipeImage) ?? UIImage())
+        
         var ret = ""
         for ingredient in recipe.recipeIngredients {
             ret += ingredient + "\n"
@@ -81,7 +81,7 @@ struct RecipeEditView: View {
         _ingredientsListStr = State(wrappedValue: ret)
     }
     
-    @State private var ingredientsListStr: String
+   
     
     func update() {
         
@@ -99,11 +99,10 @@ struct RecipeEditView: View {
             recipe.directions = directions
             recipe.source = source
             
-            let lines = ingredientsListStr.components(separatedBy: "\n")
+            let lines =  ingredientsListStr.components(separatedBy: "\n")
             recipe.ingredients = lines
-            
         }
-       
+        
     }
     
     var body: some View {
@@ -114,8 +113,8 @@ struct RecipeEditView: View {
                         FormInput(title: "Title",
                                   placeholder: "Name of recipe",
                                   field: $name.onChange(update))
-//                        ImagePickerView(selectedImage: $viewModel.selectedImage)
-//                            .padding(.trailing)
+                        ImagePickerView(selectedImage: $image)
+                            .padding(.trailing)
                     }
                     FormInput(title: "Description",
                               placeholder: "Additional details (optional)",
@@ -149,7 +148,7 @@ struct RecipeEditView: View {
                         Section {
                             Button("Delete recipe") { self.presentActionSheet.toggle()
                             }
-                                .foregroundColor(.red)
+                            .foregroundColor(.red)
                         }
                     }
                 }
@@ -165,14 +164,12 @@ struct RecipeEditView: View {
                                     },
                                 trailing:
                                     Button(mode == .new ? "Save": "Done") {
-                                    self.handleDoneTapped()
-                                })
-            //            .actionSheet(isPresented: $presentActionSheet) {
-            //                ActionSheet(title: Text("Are you sure?"), buttons: [
-            //                    .destructive(Text("Delete Recipe"), action: { self.handleDeleteTapped() }),
-            //                    .cancel()
-            //                ])
-            //            }
+                                        self.handleDoneTapped()
+                                    })
+            .alert(isPresented: $presentActionSheet) {
+                Alert(title: Text("Are you sure?"),
+                      primaryButton: .destructive(Text("Delete Recipe"), action: { self.handleDeleteTapped() }), secondaryButton: .cancel())
+            }
         }
     }
     
@@ -189,16 +186,27 @@ struct RecipeEditView: View {
             recipe.detail = detail
             recipe.directions = directions
             recipe.duration = duration
-            recipe.ingredients = ingredients
             recipe.name = name
             recipe.servings = servings
             recipe.source = source
+            
+            let lines =  ingredientsListStr.components(separatedBy: "\n")
+            recipe.ingredients = lines
+            let imageData = image.jpegData(compressionQuality: 1)
+            recipe.image = imageData
+        } else {
+            let imageData = image.jpegData(compressionQuality: 1)
+            recipe?.image = imageData
         }
         dataController.save()
         self.presentationMode.wrappedValue.dismiss()
     }
     
-    func handleDeleteTapped(){
+    func handleDeleteTapped() {
+        if let recipe = recipe {
+            dataController.delete(recipe)
+        }
+        dataController.save()
         self.dismiss()
         self.completionHandler?(.success(.delete))
     }
@@ -213,7 +221,7 @@ struct RecipeEditView_Previews: PreviewProvider {
     static var dataController = DataController.preview
     
     static var previews: some View {
-        RecipeEditView(recipe: Recipe.example)
+        RecipeEditView(recipe: Recipe.example, completion: nil)
             .environment(\.managedObjectContext, dataController.container.viewContext)
             .environmentObject(dataController)
     }
@@ -281,4 +289,3 @@ extension String {
         return allSatisfy({ $0.isWhitespace })
     }
 }
-

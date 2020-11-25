@@ -13,7 +13,7 @@ struct ImagePickerView: View {
     @State private var showImagePicker = false
     @State private var showActionSheet = false
     
-    @Binding var selectedImage: UIImage?
+    @Binding var selectedImage: UIImage
     
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
@@ -51,7 +51,7 @@ struct ImagePickerView: View {
 
 struct ImagePicker_Previews: PreviewProvider {
     
-    @State static var img: UIImage?
+    @State static var img = UIImage()
     
     static var previews: some View {
         ImagePickerView(selectedImage: $img)
@@ -62,7 +62,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     
     var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
-    @Binding var selectedImage: UIImage?
+    @Binding var selectedImage: UIImage
     @Environment(\.presentationMode) private var presentationMode
     
     func makeCoordinator() -> Coordinator {

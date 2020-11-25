@@ -12,15 +12,25 @@ struct AllRecipesView: View {
         case asGrid, asList
     }
     
+    enum ActiveSheet: Identifiable {
+        case settings, addRecipe
+        
+        var id: Int {
+            hashValue
+        }
+    }
+    
     @EnvironmentObject var dataController: DataController
     @Environment(\.managedObjectContext) var managedObjectContext
     
-    @State private var presentAddRecipeSheet = false
+    @State private var activeSheet: ActiveSheet?
+    
     @State private var presentation: mode = .asGrid
     
     let recipes: FetchRequest<Recipe>
     
     init() {
+        print("Howdy")
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
         recipes = FetchRequest<Recipe>(
             entity: Recipe.entity(),
@@ -53,30 +63,45 @@ struct AllRecipesView: View {
                         ForEach(recipes.wrappedValue) { recipe in
                             NavigationLink(destination: RecipeDetailsView(recipe: recipe)){
                                 RecipeRowView(recipe: recipe)
-                            }}
-                            .listStyle(PlainListStyle())
+                            }
+                        }
+                        .onDelete { offsets in
+                            let allRecipes = recipes.wrappedValue
+                            
+                            for offest in offsets {
+                                let recipe = allRecipes[offest]
+                                dataController.delete(recipe)
+                            }
+                            
+                            dataController.save()
+                        }
                     }
-                    
-                    
                 }
                 FloatingActionButton() {
-                    self.presentAddRecipeSheet.toggle()
+                    self.activeSheet = .addRecipe
                     //                    dataController.deleteAll()
                     //                    try? dataController.createSampleData()
                 }
-                .sheet(isPresented: $presentAddRecipeSheet){
+            }
+            .sheet(item: $activeSheet) {item in
+                switch item {
+                case .addRecipe:
                     RecipeEditView()
+                case .settings:
+                    Settings()
                 }
             }
             .navigationBarTitle("cookooree", displayMode: .inline)
-            .navigationBarItems(leading: SettingsButton(action: {}),
-                                trailing: GridListToggle(image: self.presentation == .asGrid ? "list.dash" : "square.grid.2x2") {
-                                    if self.presentation == .asList {
-                                        self.presentation = .asGrid
-                                    } else {
-                                        self.presentation = .asList
-                                    }
-                                })
+            .navigationBarItems(leading: SettingsButton(action: {
+                self.activeSheet = .settings
+            }),
+            trailing: GridListToggle(image: self.presentation == .asGrid ? "list.dash" : "square.grid.2x2") {
+                if self.presentation == .asList {
+                    self.presentation = .asGrid
+                } else {
+                    self.presentation = .asList
+                }
+            })
             
             
             
@@ -168,6 +193,11 @@ struct RecipeRowView: View {
                     .frame(width: 32, height: 32)
                     .cornerRadius(3)
                     .padding([.vertical, .trailing], 10)
+            } else {
+                Rectangle()
+                    .frame(width: 32, height: 32)
+                    .padding(.vertical, 10)
+                    .foregroundColor(.clear)
             }
         }
     }

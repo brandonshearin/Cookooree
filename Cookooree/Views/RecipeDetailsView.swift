@@ -10,10 +10,10 @@ import SwiftUI
 struct RecipeDetailsView: View {
     
     @ObservedObject var recipe: Recipe
-
+    
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var dataController: DataController
-        
+    
     @State private var isEditing = false
     
     init(recipe: Recipe){
@@ -23,57 +23,55 @@ struct RecipeDetailsView: View {
     var body: some View {
         ZStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 32) {
-                    RecipeHeading(
-                        name: recipe.recipeName,
-                        duration: recipe.recipeDuration,
-                        servings: recipe.recipeServings)
-                    if let uiImage = UIImage(data: recipe.recipeImage) {
-                        GeometryReader { geo in
+                GeometryReader { geo in
+                    VStack(alignment: .leading, spacing: 32) {
+                        RecipeHeading(
+                            name: recipe.recipeName,
+                            duration: recipe.recipeDuration,
+                            servings: recipe.recipeServings)
+                        if let uiImage = UIImage(data: recipe.recipeImage) {
+                            
                             Image(uiImage: uiImage)
                                 .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: geo.size.width)
+//                                .scaledToFill()
+                                .aspectRatio( contentMode: .fill)
+                                .frame(width: geo.size.width, height: geo.size.width)
                                 .cornerRadius(10)
+                                .clipped()
                         }
-                        .clipped()
-                        .aspectRatio(contentMode: .fit)
+                        Text(recipe.recipeDetail)
+                            .font(.body)
+                        DetailView(heading: "Ingredients", content: recipe.recipeIngredients)
+                        DetailView(heading: "Directions", content: [recipe.recipeDirections])
+                        DetailView(heading: "Source", content: [recipe.recipeSource])
+                        Spacer()
                     }
-                    Text(recipe.recipeDetail)
-                        .font(.body)
-                    DetailView(heading: "Ingredients", content: recipe.recipeIngredients)
-                    DetailView(heading: "Directions", content: [recipe.recipeDirections])
-                    DetailView(heading: "Source", content: [recipe.recipeSource])
-                    Spacer()
                 }
                 .padding(.horizontal)
             }
-            
             FloatingActionButton(icon: "pencil"){
                 isEditing.toggle()
             }
         }
         .sheet(isPresented: $isEditing) {
-            RecipeEditView(recipe: recipe, mode: Mode.edit)
-                .environmentObject(dataController)
-//            { result in
-//                if case .success(let action) = result, action == .delete {
-//                    self.presentationMode.wrappedValue.dismiss()
-//                }
-//            }
+            RecipeEditView(recipe: recipe, mode: Mode.edit) { result in
+                if case .success(let action) = result, action == .delete {
+                    self.presentationMode.wrappedValue.dismiss()
+                }
+            }
+            .environmentObject(dataController)
         }
     }
 }
-
 struct RecipeDetailsView_Previews: PreviewProvider {
     
     static var dataController = DataController.preview
     
     static var previews: some View {
         
-            RecipeDetailsView(recipe: Recipe.example)
-                .environment(\.managedObjectContext, dataController.container.viewContext)
-                .environmentObject(dataController)
+        RecipeDetailsView(recipe: Recipe.example)
+            .environment(\.managedObjectContext, dataController.container.viewContext)
+            .environmentObject(dataController)
         
     }
 }
