@@ -45,6 +45,7 @@ struct RecipeEditView: View {
     @State private var ingredientsListStr: String
     
     init() {
+        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
         mode = .new
         _name = State(wrappedValue: "")
         _servings = State(wrappedValue: "")
@@ -60,6 +61,8 @@ struct RecipeEditView: View {
     init(recipe: Recipe,
          mode: Mode = .new,
          completion: ((Result<Action, Error>) -> Void)?) {
+        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
+
         self.mode = mode
         self.recipe = recipe
         self.completionHandler = completion
@@ -189,7 +192,6 @@ struct RecipeEditView: View {
             recipe.name = name
             recipe.servings = servings
             recipe.source = source
-            
             let lines =  ingredientsListStr.components(separatedBy: "\n")
             recipe.ingredients = lines
             let imageData = image.jpegData(compressionQuality: 1)
@@ -244,8 +246,7 @@ struct FormInput: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .font(.callout)
-                .fontWeight(.heavy)
+                .font(.custom("Barlow", size: 15.0, relativeTo: .callout))
             if inputType == .field {
                 TextField(placeholder,
                           text: $field)

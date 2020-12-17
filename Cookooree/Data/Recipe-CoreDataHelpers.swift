@@ -34,6 +34,10 @@ extension Recipe {
         ingredients ?? [String]()
     }
     
+    var ingredientsForTextSearch: String {
+        recipeIngredients.joined(separator: " ")
+    }
+    
     var recipeName: String {
         name ?? ""
     }
@@ -45,6 +49,9 @@ extension Recipe {
     var recipeSource: String {
         source ?? ""
     }
+    
+    static let filterKeyPaths: [KeyPath<Recipe, String>] =
+        [\.recipeName,\.recipeDirections, \.recipeSource, \.recipeDetail, \.ingredientsForTextSearch]
     
     static var example: Recipe {
         let controller = DataController(inMemory: true)
@@ -75,4 +82,5 @@ extension Recipe {
         
         return recipe
     }
+    
 }

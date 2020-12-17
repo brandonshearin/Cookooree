@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct AllRecipesView: View {
-    enum mode {
+    
+    enum Layout {
         case asGrid, asList
+    }
+    
+    enum SortOrder {
+        case alphabet, creationTime
     }
     
     enum ActiveSheet: Identifiable {
@@ -24,59 +29,72 @@ struct AllRecipesView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     
     @State private var activeSheet: ActiveSheet?
+    @State private var presentation: Layout = .asGrid
+    @State private var sortOrder: SortOrder = .creationTime
+    @State private var searchString = ""
     
-    @State private var presentation: mode = .asGrid
+    @State private var screenOn = false
     
     let recipes: FetchRequest<Recipe>
     
     init() {
-        print("Howdy")
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
         recipes = FetchRequest<Recipe>(
             entity: Recipe.entity(),
             sortDescriptors: [NSSortDescriptor(keyPath: \Recipe.creationDate, ascending: false)])
     }
     
+    var LayoutView: some View {
+        
+        
+        
+        var orderedRecipes: [Recipe]
+        
+        // filter recipes by search term BEFORE sorting
+        var filteredRecipes: [FetchedResults<Recipe>.Element]
+        if searchString.isEmpty {
+            filteredRecipes = recipes.wrappedValue.map{ $0 }
+        } else {
+            filteredRecipes = recipes.wrappedValue.filter { element in
+                Recipe.filterKeyPaths.contains {
+                    element[keyPath: $0]
+                        .localizedCaseInsensitiveContains(searchString)
+                }
+            }
+        }
+        
+        
+        if sortOrder == .creationTime {
+            orderedRecipes = filteredRecipes.sorted {
+                $0.recipeCreationDate > $1.recipeCreationDate
+            }
+        } else {
+            orderedRecipes = filteredRecipes.sorted {
+                $0.recipeName < $1.recipeName
+            }
+        }
+        
+        if presentation == .asGrid {
+            return AnyView(
+                RecipeGridView(recipes: orderedRecipes))
+        } else {
+            return AnyView(
+                RecipeListView(recipes: orderedRecipes, sortOrder: sortOrder))
+        }
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
-                if presentation == .asGrid {
-                    let columns = [
-                        GridItem(.flexible(), spacing: 3),
-                        GridItem(.flexible(), spacing: 3),
-                        GridItem(.flexible(), spacing: 3)
-                    ]
-                    ScrollView {
-                        LazyVGrid(columns: columns, alignment: .center, spacing: 3, pinnedViews: [.sectionHeaders]){
-                            
-                            ForEach(recipes.wrappedValue) { recipe in
-                                NavigationLink(destination: RecipeDetailsView(recipe: recipe)
-                                ) {
-                                    GridTile(recipe: recipe)
-                                }
-                                
-                            }
-                        }
-                    }
-                } else {
-                    List {
-                        ForEach(recipes.wrappedValue) { recipe in
-                            NavigationLink(destination: RecipeDetailsView(recipe: recipe)){
-                                RecipeRowView(recipe: recipe)
-                            }
-                        }
-                        .onDelete { offsets in
-                            let allRecipes = recipes.wrappedValue
-                            
-                            for offest in offsets {
-                                let recipe = allRecipes[offest]
-                                dataController.delete(recipe)
-                            }
-                            
-                            dataController.save()
-                        }
-                    }
+                VStack {
+                    SearchBar(
+                        sortOrder: $sortOrder,
+                        layout: $presentation,
+                        searchString: $searchString)
+                    LayoutView
                 }
+                
+                
                 FloatingActionButton() {
                     self.activeSheet = .addRecipe
                     //                    dataController.deleteAll()
@@ -88,22 +106,13 @@ struct AllRecipesView: View {
                 case .addRecipe:
                     RecipeEditView()
                 case .settings:
-                    Settings()
+                    Settings(screenOn: $screenOn)
                 }
             }
             .navigationBarTitle("cookooree", displayMode: .inline)
             .navigationBarItems(leading: SettingsButton(action: {
                 self.activeSheet = .settings
-            }),
-            trailing: GridListToggle(image: self.presentation == .asGrid ? "list.dash" : "square.grid.2x2") {
-                if self.presentation == .asList {
-                    self.presentation = .asGrid
-                } else {
-                    self.presentation = .asList
-                }
-            })
-            
-            
+            }))
             
         }
     }
@@ -117,21 +126,6 @@ struct SettingsButton: View {
         Button(action: {self.action()}){
             Image(systemName: "gear")
                 .resizable()
-                .imageScale(.large)
-                .foregroundColor(.black)
-                .padding([.vertical,.leading])
-        }
-    }
-}
-struct GridListToggle: View {
-    
-    var image: String
-    
-    var action: () -> Void
-    
-    var body: some View {
-        Button(action: { self.action() }) {
-            Image(systemName: image)
                 .imageScale(.large)
                 .foregroundColor(.black)
                 .padding([.vertical,.leading])
@@ -183,22 +177,27 @@ struct RecipeRowView: View {
     @ObservedObject var recipe: Recipe
     
     var body: some View {
-        HStack {
-            Text(recipe.recipeName)
-            Spacer()
-            if let uiImage = UIImage(data: recipe.recipeImage){
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 32, height: 32)
-                    .cornerRadius(3)
-                    .padding([.vertical, .trailing], 10)
-            } else {
-                Rectangle()
-                    .frame(width: 32, height: 32)
-                    .padding(.vertical, 10)
-                    .foregroundColor(.clear)
+        VStack{
+            HStack {
+                Text(recipe.recipeName)
+                    .foregroundColor(.black)
+                Spacer()
+                if let uiImage = UIImage(data: recipe.recipeImage){
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 32, height: 32)
+                        .cornerRadius(3)
+                        .padding([.vertical, .trailing], 10)
+                } else {
+                    Rectangle()
+                        .frame(width: 32, height: 32)
+                        .padding(.vertical, 10)
+                        .foregroundColor(.clear)
+                }
             }
+            Divider()
         }
+       
     }
 }

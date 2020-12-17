@@ -17,15 +17,18 @@
 		CF5BD840253E1E7D00761335 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF5BD83F253E1E7D00761335 /* Assets.xcassets */; };
 		CF5BD843253E1E7D00761335 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF5BD842253E1E7D00761335 /* Preview Assets.xcassets */; };
 		CF5BD84D253E20C400761335 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF5BD84C253E20C400761335 /* GoogleService-Info.plist */; };
+		CF76811B2582A6B300E0F69C /* FilteringList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF76811A2582A6B300E0F69C /* FilteringList.swift */; };
 		CF863613254638AA00421133 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF863612254638AA00421133 /* RemoteImage.swift */; };
 		CF95D4212561C57C00AE50F8 /* Recipe-CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF95D4202561C57C00AE50F8 /* Recipe-CoreDataHelpers.swift */; };
 		CF95D4242561E74D00AE50F8 /* Binding-OnChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF95D4232561E74D00AE50F8 /* Binding-OnChange.swift */; };
+		CFC29309258AB1BE007A376E /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC29308258AB1BE007A376E /* WebView.swift */; };
 		CFE46EE82540ECE200CA089A /* RecipeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE46EE72540ECE200CA089A /* RecipeEditView.swift */; };
 		CFEE475225520E2600D11068 /* RecipeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEE475125520E2600D11068 /* RecipeListView.swift */; };
 		CFEE475725520E9F00D11068 /* RecipeGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEE475625520E9F00D11068 /* RecipeGridView.swift */; };
 		CFEF40682544F8470029DEEA /* RecipeDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEF40672544F8470029DEEA /* RecipeDetailsView.swift */; };
 		CFEF406E2545BCE50029DEEA /* Barlow-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CFEF406D2545BCE50029DEEA /* Barlow-Black.ttf */; };
 		CFEF407125461FCA0029DEEA /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEF407025461FCA0029DEEA /* ImagePickerView.swift */; };
+		CFEFF49A256EFAA300E6B364 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEFF499256EFAA300E6B364 /* SearchBar.swift */; };
 		CFFA306B256843D600F23125 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFA306A256843D600F23125 /* Settings.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,15 +46,18 @@
 		CF5BD842253E1E7D00761335 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CF5BD844253E1E7D00761335 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF5BD84C253E20C400761335 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CF76811A2582A6B300E0F69C /* FilteringList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringList.swift; sourceTree = "<group>"; };
 		CF863612254638AA00421133 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		CF95D4202561C57C00AE50F8 /* Recipe-CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Recipe-CoreDataHelpers.swift"; sourceTree = "<group>"; };
 		CF95D4232561E74D00AE50F8 /* Binding-OnChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding-OnChange.swift"; sourceTree = "<group>"; };
+		CFC29308258AB1BE007A376E /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		CFE46EE72540ECE200CA089A /* RecipeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEditView.swift; sourceTree = "<group>"; };
 		CFEE475125520E2600D11068 /* RecipeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListView.swift; sourceTree = "<group>"; };
 		CFEE475625520E9F00D11068 /* RecipeGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGridView.swift; sourceTree = "<group>"; };
 		CFEF40672544F8470029DEEA /* RecipeDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailsView.swift; sourceTree = "<group>"; };
 		CFEF406D2545BCE50029DEEA /* Barlow-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Barlow-Black.ttf"; sourceTree = "<group>"; };
 		CFEF407025461FCA0029DEEA /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
+		CFEFF499256EFAA300E6B364 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		CFFA306A256843D600F23125 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,6 +129,8 @@
 				CF863612254638AA00421133 /* RemoteImage.swift */,
 				CF2EA54D2547629D00D3A584 /* FloatingActionButton.swift */,
 				CF23A24E25535C960033E4DE /* Colors.swift */,
+				CF76811A2582A6B300E0F69C /* FilteringList.swift */,
+				CFC29308258AB1BE007A376E /* WebView.swift */,
 			);
 			path = "Helper Components";
 			sourceTree = "<group>";
@@ -151,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				CF5BD83D253E1E7C00761335 /* AllRecipesView.swift */,
+				CFEFF499256EFAA300E6B364 /* SearchBar.swift */,
 				CFE46EE72540ECE200CA089A /* RecipeEditView.swift */,
 				CFEF40672544F8470029DEEA /* RecipeDetailsView.swift */,
 				CFEF407025461FCA0029DEEA /* ImagePickerView.swift */,
@@ -236,14 +245,17 @@
 				CFEF40682544F8470029DEEA /* RecipeDetailsView.swift in Sources */,
 				CFE46EE82540ECE200CA089A /* RecipeEditView.swift in Sources */,
 				CFEE475225520E2600D11068 /* RecipeListView.swift in Sources */,
+				CFEFF49A256EFAA300E6B364 /* SearchBar.swift in Sources */,
 				CF95D4242561E74D00AE50F8 /* Binding-OnChange.swift in Sources */,
 				CF5BD83E253E1E7C00761335 /* AllRecipesView.swift in Sources */,
 				CFEF407125461FCA0029DEEA /* ImagePickerView.swift in Sources */,
 				CF3A109D255DE0FD0053C468 /* Main.xcdatamodeld in Sources */,
 				CFFA306B256843D600F23125 /* Settings.swift in Sources */,
+				CF76811B2582A6B300E0F69C /* FilteringList.swift in Sources */,
 				CF3A10A1255DE35C0053C468 /* DataController.swift in Sources */,
 				CF23A24F25535C960033E4DE /* Colors.swift in Sources */,
 				CFEE475725520E9F00D11068 /* RecipeGridView.swift in Sources */,
+				CFC29309258AB1BE007A376E /* WebView.swift in Sources */,
 				CF2EA54E2547629D00D3A584 /* FloatingActionButton.swift in Sources */,
 				CF5BD83C253E1E7C00761335 /* CookooreeApp.swift in Sources */,
 			);
@@ -384,7 +396,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = brandon.Cookooree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -408,7 +420,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = brandon.Cookooree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

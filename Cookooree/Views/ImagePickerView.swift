@@ -22,36 +22,74 @@ struct ImagePickerView: View {
             Button(action: {
                 self.showActionSheet.toggle()
             }) {
-                Image(systemName: "camera")
-                    .foregroundColor(.black)
-                    .imageScale(.large)
+                if imageIsNull(image: selectedImage) {
+                    Image(systemName: "camera")
+                        .foregroundColor(.black)
+                        .imageScale(.large)
+                } else {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 32, height: 32)
+                        .cornerRadius(3)
+                }
             }
             .actionSheet(isPresented: $showActionSheet){
-                ActionSheet(title: Text("Add a photo"),
-                            buttons: [
-                                .default(Text("Choose from Library")){
-                                    self.sourceType = .photoLibrary
-                                    self.showImagePicker = true
-
-                                },
-                                .default(Text("Take a photo")){
-                                    self.sourceType = .camera
-                                    self.showImagePicker = true
-                                },
-                                .cancel()
-                            ])
+                if imageIsNull(image: selectedImage) {
+                    // if no photo selected, show ADD sheet
+                    return ActionSheet(title: Text("Add a photo"),
+                                buttons: [
+                                    .default(Text("Choose from Library")){
+                                        self.sourceType = .photoLibrary
+                                        self.showImagePicker = true
+                                    },
+                                    .default(Text("Take a photo")){
+                                        self.sourceType = .camera
+                                        self.showImagePicker = true
+                                    },
+                                    .cancel()
+                                ])
+                } else {
+                    // if there is a photo already selected, show EDIT sheet
+                   return ActionSheet(title: Text("Edit photo"),
+                                      buttons: [
+                                        .default(Text("Remove photo")) {
+                                            self.selectedImage = UIImage()
+                                        },
+                                          .default(Text("Choose from Library")){
+                                              self.sourceType = .photoLibrary
+                                              self.showImagePicker = true
+                                          },
+                                          .default(Text("Take a photo")){
+                                              self.sourceType = .camera
+                                              self.showImagePicker = true
+                                          },
+                                          .cancel()
+                                      ])
+                }
+              
             }
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(sourceType: sourceType, selectedImage: $selectedImage)
             }
         }
+        
+    }
+    
+    func imageIsNull(image: UIImage) -> Bool {
+        let size = CGSize(width: 0, height: 0)
+        if image.size.width == size.width {
+            return true
+        }
+        return false
     }
     
 }
 
 struct ImagePicker_Previews: PreviewProvider {
     
-    @State static var img = UIImage()
+//    @State static var img = UIImage()
+    @State static var img = UIImage(named: "TestImage")!
     
     static var previews: some View {
         ImagePickerView(selectedImage: $img)

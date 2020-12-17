@@ -22,56 +22,58 @@ struct RecipeDetailsView: View {
     
     var body: some View {
         ZStack {
-            ScrollView {
-                GeometryReader { geo in
+            GeometryReader { geo in
+                ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 32) {
                         RecipeHeading(
                             name: recipe.recipeName,
                             duration: recipe.recipeDuration,
                             servings: recipe.recipeServings)
+                        
                         if let uiImage = UIImage(data: recipe.recipeImage) {
-                            
                             Image(uiImage: uiImage)
                                 .resizable()
-//                                .scaledToFill()
                                 .aspectRatio( contentMode: .fill)
-                                .frame(width: geo.size.width, height: geo.size.width)
+                                .frame(width: geo.size.width  * 0.92, height: geo.size.width)
                                 .cornerRadius(10)
                                 .clipped()
+                            
                         }
+                        
                         Text(recipe.recipeDetail)
                             .font(.body)
                         DetailView(heading: "Ingredients", content: recipe.recipeIngredients)
                         DetailView(heading: "Directions", content: [recipe.recipeDirections])
                         DetailView(heading: "Source", content: [recipe.recipeSource])
                         Spacer()
+                            .frame(minHeight: 100)
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
             FloatingActionButton(icon: "pencil"){
                 isEditing.toggle()
             }
-        }
-        .sheet(isPresented: $isEditing) {
-            RecipeEditView(recipe: recipe, mode: Mode.edit) { result in
-                if case .success(let action) = result, action == .delete {
-                    self.presentationMode.wrappedValue.dismiss()
+            .sheet(isPresented: $isEditing) {
+                RecipeEditView(recipe: recipe, mode: Mode.edit) { result in
+                    if case .success(let action) = result, action == .delete {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
+                .environmentObject(dataController)
             }
-            .environmentObject(dataController)
         }
     }
-}
-struct RecipeDetailsView_Previews: PreviewProvider {
     
-    static var dataController = DataController.preview
+}
+
+struct RecipeDetailsView_Previews: PreviewProvider {
     
     static var previews: some View {
         
         RecipeDetailsView(recipe: Recipe.example)
-            .environment(\.managedObjectContext, dataController.container.viewContext)
-            .environmentObject(dataController)
+            .environment(\.managedObjectContext, DataController.preview.container.viewContext)
+            .environmentObject(DataController.preview)
         
     }
 }
@@ -85,8 +87,7 @@ struct RecipeHeading: View {
     var body: some View {
         VStack(alignment: .leading){
             Text(name)
-                .font(.title)
-                .fontWeight(.bold)
+                .font(.custom("Barlow", size: 24.0, relativeTo: .title))
                 .padding(.vertical, 12)
             HStack(spacing: 24) {
                 if !duration.isEmpty {
@@ -107,6 +108,7 @@ struct RecipeHeading: View {
                 Spacer()
             }
         }
+        .fixedSize(horizontal: false, vertical: true)
         
     }
 }
@@ -127,8 +129,7 @@ struct DetailView: View {
         if !hide() {
             VStack(alignment: .leading) {
                 Text(heading)
-                    .font(.headline)
-                    .fontWeight(.bold)
+                    .font(.custom("Barlow", size: 15.0, relativeTo: .headline))
                 ForEach(content, id: \.self) { item in
                     Text(item)
                         .font(.body)
