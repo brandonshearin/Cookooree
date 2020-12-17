@@ -102,7 +102,9 @@ struct RecipeEditView: View {
             recipe.directions = directions
             recipe.source = source
             
-            let lines =  ingredientsListStr.components(separatedBy: "\n")
+            let trimmed = ingredientsListStr.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+
+            let lines =  trimmed.components(separatedBy: "\n")
             recipe.ingredients = lines
         }
         
@@ -114,7 +116,7 @@ struct RecipeEditView: View {
                 VStack {
                     HStack(alignment: .top) {
                         FormInput(title: "Title",
-                                  placeholder: "Name of recipe",
+                                  placeholder: "Name of recipe (required)",
                                   field: $name.onChange(update))
                         ImagePickerView(selectedImage: $image)
                             .padding(.trailing)
@@ -125,13 +127,11 @@ struct RecipeEditView: View {
                     
                     FormInput(title: "Ingredients",
                               placeholder: "One ingredient per line",
-                              field: $ingredientsListStr.onChange(update),
-                              inputType: .area)
+                              field: $ingredientsListStr.onChange(update))
                     
                     FormInput(title: "Directions",
                               placeholder: "",
-                              field: $directions.onChange(update),
-                              inputType: .area)
+                              field: $directions.onChange(update), height: 200)
                     
                     FormInput(title: "Total Time",
                               placeholder: "Cooking time",
@@ -171,7 +171,8 @@ struct RecipeEditView: View {
                                 trailing:
                                     Button(mode == .new ? "Save": "Done") {
                                         self.handleDoneTapped()
-                                    })
+                                    }
+                                    .disabled(name.isEmpty))
             .alert(isPresented: $presentActionSheet) {
                 Alert(title: Text("Are you sure?"),
                       primaryButton: .destructive(Text("Delete Recipe"), action: { self.handleDeleteTapped() }), secondaryButton: .cancel())
@@ -235,59 +236,26 @@ struct RecipeEditView_Previews: PreviewProvider {
     }
 }
 
-
-enum InputType {
-    case field
-    case area
-}
-
 struct FormInput: View {
     
     var title: String
     var placeholder: String
     @Binding var field: String
-    
-    var inputType: InputType = .field
+
+    var height: CGFloat?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.custom("Barlow", size: 15.0, relativeTo: .callout))
                 .padding(.horizontal, 8)
-            if inputType == .field {
-                GoodTextEditor(text: $field)
-            }else if inputType == .area {
-                GoodTextEditor(text: $field)
-                    .frame(minHeight: 200)
-            }
+            GoodTextEditor(text: $field, placeholder: placeholder)
+                .frame(minHeight: height)
             Divider()
         }
         .fixedSize(horizontal: false, vertical: true)
         .padding([.horizontal,.bottom])
         .ignoresSafeArea(.keyboard)
-    }
-}
-
-struct TextArea: View {
-    private let placeholder: String
-    @Binding var text: String
-    
-    init(_ placeholder: String, text: Binding<String>) {
-        self.placeholder = placeholder
-        self._text = text
-    }
-    
-    var body: some View {
-        ZStack(alignment: .topLeading) {
-            TextEditor(text: $text).padding(.all, 1)
-            HStack(alignment: .top) {
-                text.isEmpty ? Text(placeholder) : Text("")
-                Spacer()
-            }
-            .foregroundColor(Color.primary.opacity(0.25))
-        }
-        .frame(minHeight: 200)
-        
     }
 }
 
@@ -306,17 +274,19 @@ extension View {
 struct GoodTextEditor: View {
     
     @Binding private var text: String
+    var placeholder: String
     
-    init(text: Binding<String>) {
+    init(text: Binding<String>, placeholder: String) {
         UITextView.appearance().backgroundColor = .clear
         _text = text
+        self.placeholder = placeholder
     }
     
     var body: some View {
         ZStack(alignment: .topLeading) {
             
             if text.isEmpty {
-                Text("Placeholder Text")
+                Text(placeholder)
                     .foregroundColor(Color(UIColor.placeholderText))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 12)
@@ -327,5 +297,15 @@ struct GoodTextEditor: View {
             
         }
         .font(.body)
+    }
+}
+
+
+extension String {
+    func removingLeadingSpaces() -> String {
+        guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
+            return self
+        }
+        return String(self[index...])
     }
 }
