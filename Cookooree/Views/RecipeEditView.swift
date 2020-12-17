@@ -62,7 +62,7 @@ struct RecipeEditView: View {
          mode: Mode = .new,
          completion: ((Result<Action, Error>) -> Void)?) {
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
-
+        
         self.mode = mode
         self.recipe = recipe
         self.completionHandler = completion
@@ -84,7 +84,7 @@ struct RecipeEditView: View {
         _ingredientsListStr = State(wrappedValue: ret)
     }
     
-   
+    
     
     func update() {
         
@@ -155,6 +155,9 @@ struct RecipeEditView: View {
                         }
                     }
                 }
+                .onTapGesture {
+                    self.hideKeyboard()
+                }
             }
             .padding(.vertical)
             .navigationBarTitle(mode == .new ?
@@ -223,9 +226,12 @@ struct RecipeEditView_Previews: PreviewProvider {
     static var dataController = DataController.preview
     
     static var previews: some View {
-        RecipeEditView(recipe: Recipe.example, completion: nil)
-            .environment(\.managedObjectContext, dataController.container.viewContext)
-            .environmentObject(dataController)
+        Group {
+            RecipeEditView(recipe: Recipe.emptyExample, completion: nil)
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+                .environmentObject(dataController)
+            
+        }
     }
 }
 
@@ -247,15 +253,16 @@ struct FormInput: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.custom("Barlow", size: 15.0, relativeTo: .callout))
+                .padding(.horizontal, 8)
             if inputType == .field {
-                TextField(placeholder,
-                          text: $field)
+                GoodTextEditor(text: $field)
             }else if inputType == .area {
-                TextArea(placeholder, text: $field)
+                GoodTextEditor(text: $field)
+                    .frame(minHeight: 200)
             }
-            
             Divider()
         }
+        .fixedSize(horizontal: false, vertical: true)
         .padding([.horizontal,.bottom])
         .ignoresSafeArea(.keyboard)
     }
@@ -272,15 +279,14 @@ struct TextArea: View {
     
     var body: some View {
         ZStack(alignment: .topLeading) {
-            TextEditor(text: $text)
+            TextEditor(text: $text).padding(.all, 1)
             HStack(alignment: .top) {
                 text.isEmpty ? Text(placeholder) : Text("")
                 Spacer()
             }
             .foregroundColor(Color.primary.opacity(0.25))
-            .padding(EdgeInsets(top: 0, leading: 4, bottom: 7, trailing: 0))
         }
-        .frame(minHeight: 150)
+        .frame(minHeight: 200)
         
     }
 }
@@ -288,5 +294,38 @@ struct TextArea: View {
 extension String {
     var isBlank: Bool {
         return allSatisfy({ $0.isWhitespace })
+    }
+}
+
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+struct GoodTextEditor: View {
+    
+    @Binding private var text: String
+    
+    init(text: Binding<String>) {
+        UITextView.appearance().backgroundColor = .clear
+        _text = text
+    }
+    
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            
+            if text.isEmpty {
+                Text("Placeholder Text")
+                    .foregroundColor(Color(UIColor.placeholderText))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 12)
+            }
+            
+            TextEditor(text: $text)
+                .padding(4)
+            
+        }
+        .font(.body)
     }
 }

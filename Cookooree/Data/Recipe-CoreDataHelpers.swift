@@ -83,4 +83,17 @@ extension Recipe {
         return recipe
     }
     
+    static var emptyExample: Recipe {
+        let controller = DataController(inMemory: true)
+        let viewContext = controller.container.viewContext
+
+        let recipe = Recipe(context: viewContext)
+        
+        recipe.id = UUID()
+        
+        try? viewContext.save()
+        
+        return recipe
+    }
+    
 }

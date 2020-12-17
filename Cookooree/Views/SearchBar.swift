@@ -50,7 +50,7 @@ struct SearchBar: View {
                     self.isEditing = false
                     self.searchString = ""
                     // dismiss the keyboard
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    self.hideKeyboard()
 
                 }
                 .padding(.trailing, 10)
