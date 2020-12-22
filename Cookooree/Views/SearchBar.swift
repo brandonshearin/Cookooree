@@ -9,8 +9,8 @@ import SwiftUI
 
 struct SearchBar: View {
     
-    @Binding var sortOrder: AllRecipesView.SortOrder
-    @Binding var layout: AllRecipesView.Layout
+    @Binding var sortOrder: String
+    @Binding var layout: String
     
     @Binding var searchString: String
     @State private var isEditing = false
@@ -58,19 +58,22 @@ struct SearchBar: View {
                 .animation(.default)
             }
             
-            IconSwitch(image: sortOrder == .alphabet ? "clock" : "textformat.abc" ) {
-                if sortOrder == .creationTime {
-                    sortOrder = .alphabet
+            IconSwitch(image: sortOrder == "alphabet" ? "clock" : "textformat.abc" ) {
+                if sortOrder == "creationTime" {
+                    sortOrder = "alphabet"
                 } else {
-                    sortOrder = .creationTime
+                    sortOrder = "creationTime"
                 }
             }
             
-            IconSwitch(image: layout == .asGrid ? "list.dash" : "square.grid.2x2") {
-                if layout == .asList {
-                    layout = .asGrid
+            IconSwitch(image: layout == "Grid" ?
+                        "list.dash" : "square.grid.2x2") {
+                if layout == "List" {
+                    self.layout = "Grid"
+                } else if layout == "Grid" {
+                    self.layout = "List"
                 } else {
-                    layout = .asList
+                    self.layout = "Shitball"
                 }
             }
         }
@@ -80,8 +83,8 @@ struct SearchBar: View {
 
 struct SearchBar_Previews: PreviewProvider {
     
-    @State static var sortOrder = AllRecipesView.SortOrder.creationTime
-    @State static var layout = AllRecipesView.Layout.asGrid
+    @State static var sortOrder = "creationTime"
+    @State static var layout = "List"
     @State static var searchString = ""
     
     static var previews: some View {

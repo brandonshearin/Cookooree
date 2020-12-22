@@ -9,14 +9,6 @@ import SwiftUI
 
 struct AllRecipesView: View {
     
-    enum Layout {
-        case asGrid, asList
-    }
-    
-    enum SortOrder {
-        case alphabet, creationTime
-    }
-    
     enum ActiveSheet: Identifiable {
         case settings, addRecipe
         
@@ -29,8 +21,8 @@ struct AllRecipesView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     
     @State private var activeSheet: ActiveSheet?
-    @State private var presentation: Layout = .asGrid
-    @State private var sortOrder: SortOrder = .creationTime
+    @AppStorage("layout") var layout = "Grid"
+    @AppStorage("sortOrder") var sortOrder = "creationTime"
     @State private var searchString = ""
     
     @State private var screenOn = false
@@ -62,7 +54,7 @@ struct AllRecipesView: View {
         }
         
         
-        if sortOrder == .creationTime {
+        if sortOrder == "creationTime" {
             orderedRecipes = filteredRecipes.sorted {
                 $0.recipeCreationDate > $1.recipeCreationDate
             }
@@ -72,7 +64,7 @@ struct AllRecipesView: View {
             }
         }
         
-        if presentation == .asGrid {
+        if layout == "Grid" {
             return AnyView(
                 RecipeGridView(recipes: orderedRecipes))
         } else {
@@ -87,7 +79,7 @@ struct AllRecipesView: View {
                 VStack {
                     SearchBar(
                         sortOrder: $sortOrder,
-                        layout: $presentation,
+                        layout: $layout,
                         searchString: $searchString)
                     LayoutView
                 }
