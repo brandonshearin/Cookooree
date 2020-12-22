@@ -62,7 +62,7 @@ struct GridTile: View {
                 Rectangle()
                     .foregroundColor(.random)
                     .overlay(
-                        Text("this is a title")
+                        Text(recipe.recipeName)
                             .font(Font.custom("Barlow", size: 12))
                             .foregroundColor(.black)
                             .padding(.leading, 8),

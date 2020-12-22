@@ -58,19 +58,19 @@ struct Settings: View {
                 
             }
             .sheet(item: $destination){ dest in
-                WebView(url: URL(string: dest.link)!)
-                    .edgesIgnoringSafeArea(.all)
+                NavigationView {
+                    WebView(url: URL(string: dest.link)!)
+                        .edgesIgnoringSafeArea(.all)
+                        .navigationBarItems(trailing: closeBtn(action: {
+                            self.destination = nil
+                        }))
+                }
             }
             .padding()
-            .navigationBarItems(trailing: Button(action: {
-                self.presentationMode.wrappedValue.dismiss()
-            }){
-                Image(systemName: "xmark")
-                    .imageScale(.large)
-                    .foregroundColor(.black)
-            }
-            
-            )
+            .navigationBarItems(trailing:
+                                    closeBtn(action: {
+                                        self.presentationMode.wrappedValue.dismiss()
+                                    }))
         }
     }
 }
@@ -99,3 +99,18 @@ struct LinkView: View {
         .contentShape(Rectangle())
     }
 }
+
+struct closeBtn: View {
+    
+    var action: () -> Void
+    
+    var body: some View {
+        Button(action: action){
+            Image(systemName: "multiply.circle.fill")
+                .imageScale(.large)
+                .foregroundColor(.gray)
+        }
+    }
+}
+
+
