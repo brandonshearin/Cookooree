@@ -14,6 +14,7 @@ struct SearchBar: View {
     
     @Binding var searchString: String
     @State private var isEditing = false
+    @State private var iconHidden = false
     
     var body: some View {
         HStack {
@@ -42,13 +43,17 @@ struct SearchBar: View {
                 )
                 .padding(.horizontal, 10)
                 .onTapGesture {
-                    self.isEditing = true
+                    withAnimation {
+                        self.isEditing = true
+                        self.iconHidden = true
+                    }
                 }
             
             if isEditing {
                 Button("Cancel") {
                     self.isEditing = false
                     self.searchString = ""
+                    self.iconHidden = false
                     // dismiss the keyboard
                     self.hideKeyboard()
 
@@ -58,24 +63,28 @@ struct SearchBar: View {
                 .animation(.default)
             }
             
-            IconSwitch(image: sortOrder == "alphabet" ? "clock" : "textformat.abc" ) {
-                if sortOrder == "creationTime" {
-                    sortOrder = "alphabet"
-                } else {
-                    sortOrder = "creationTime"
+            Group {
+                IconSwitch(image: sortOrder == "alphabet" ? "clock" : "textformat.abc" ) {
+                    if sortOrder == "creationTime" {
+                        sortOrder = "alphabet"
+                    } else {
+                        sortOrder = "creationTime"
+                    }
+                }
+                
+                IconSwitch(image: layout == "Grid" ?
+                            "list.dash" : "square.grid.2x2") {
+                    if layout == "List" {
+                        self.layout = "Grid"
+                    } else if layout == "Grid" {
+                        self.layout = "List"
+                    } else {
+                        self.layout = "Shitball"
+                    }
                 }
             }
+            .isHidden(iconHidden, remove: true)
             
-            IconSwitch(image: layout == "Grid" ?
-                        "list.dash" : "square.grid.2x2") {
-                if layout == "List" {
-                    self.layout = "Grid"
-                } else if layout == "Grid" {
-                    self.layout = "List"
-                } else {
-                    self.layout = "Shitball"
-                }
-            }
         }
         .padding()
     }
@@ -114,6 +123,37 @@ struct IconSwitch: View {
                 .foregroundColor(.black)
                 .padding(.leading)
             
+        }
+    }
+}
+
+
+extension View {
+    
+    /// Hide or show the view based on a boolean value.
+    ///
+    /// Example for visibility:
+    /// ```
+    /// Text("Label")
+    ///     .isHidden(true)
+    /// ```
+    ///
+    /// Example for complete removal:
+    /// ```
+    /// Text("Label")
+    ///     .isHidden(true, remove: true)
+    /// ```
+    ///
+    /// - Parameters:
+    ///   - hidden: Set to `false` to show the view. Set to `true` to hide the view.
+    ///   - remove: Boolean value indicating whether or not to remove the view.
+    @ViewBuilder func isHidden(_ hidden: Bool, remove: Bool = false) -> some View {
+        if hidden {
+            if !remove {
+                self.hidden()
+            }
+        } else {
+            self
         }
     }
 }

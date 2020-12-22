@@ -47,3 +47,33 @@ struct RecipeListView_Previews: PreviewProvider {
         }
     }
 }
+
+struct RecipeRowView: View {
+    
+    @ObservedObject var recipe: Recipe
+    
+    var body: some View {
+        VStack{
+            HStack {
+                Text(recipe.recipeName)
+                    .foregroundColor(.black)
+                Spacer()
+                if let uiImage = UIImage(data: recipe.recipeImage){
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 32, height: 32)
+                        .cornerRadius(3)
+                        .padding([.vertical, .trailing], 10)
+                } else {
+                    Rectangle()
+                        .frame(width: 32, height: 32)
+                        .padding(.vertical, 10)
+                        .foregroundColor(.clear)
+                }
+            }
+            Divider()
+        }
+       
+    }
+}

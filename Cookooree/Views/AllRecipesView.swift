@@ -133,59 +133,6 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct GridTile: View {
-    
-    @ObservedObject var recipe: Recipe
-    
-    var body: some View {
-        GeometryReader { gr in
-            if let uiImage = UIImage(data: recipe.recipeImage) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height:gr.size.width)
-            } else {
-                Rectangle()
-                    .foregroundColor(.random)
-                    .overlay(
-                        Text(recipe.recipeName)
-                            .font(Font.custom("Barlow", size: 12))
-                            .foregroundColor(.black)
-                    )
-                    .frame(height:gr.size.width)
-            }
-        }
-        .clipped()
-        .aspectRatio(1, contentMode: .fit)
-    }
-}
 
-struct RecipeRowView: View {
-    
-    @ObservedObject var recipe: Recipe
-    
-    var body: some View {
-        VStack{
-            HStack {
-                Text(recipe.recipeName)
-                    .foregroundColor(.black)
-                Spacer()
-                if let uiImage = UIImage(data: recipe.recipeImage){
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 32, height: 32)
-                        .cornerRadius(3)
-                        .padding([.vertical, .trailing], 10)
-                } else {
-                    Rectangle()
-                        .frame(width: 32, height: 32)
-                        .padding(.vertical, 10)
-                        .foregroundColor(.clear)
-                }
-            }
-            Divider()
-        }
-       
-    }
-}
+
+

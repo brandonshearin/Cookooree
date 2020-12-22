@@ -41,8 +41,37 @@ struct RecipeGridView_Previews: PreviewProvider {
 
     static var previews: some View {
         NavigationView{
-            RecipeGridView(recipes:[Recipe.example])
+            RecipeGridView(recipes:[Recipe.emptyExample])
         }
     }
 }
 
+
+struct GridTile: View {
+    
+    @ObservedObject var recipe: Recipe
+    
+    var body: some View {
+        GeometryReader { gr in
+            if let uiImage = UIImage(data: recipe.recipeImage) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height:gr.size.width)
+            } else {
+                Rectangle()
+                    .foregroundColor(.random)
+                    .overlay(
+                        Text("this is a title")
+                            .font(Font.custom("Barlow", size: 12))
+                            .foregroundColor(.black)
+                            .padding(.leading, 8),
+                        alignment: .leading
+                    )
+                    .frame(height:gr.size.width)
+            }
+        }
+        .clipped()
+        .aspectRatio(1, contentMode: .fit)
+    }
+}

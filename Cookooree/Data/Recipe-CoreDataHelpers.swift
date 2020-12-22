@@ -90,6 +90,7 @@ extension Recipe {
         let recipe = Recipe(context: viewContext)
         
         recipe.id = UUID()
+        recipe.name = "this is a title you know"
         
         try? viewContext.save()
         
