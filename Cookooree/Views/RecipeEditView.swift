@@ -292,8 +292,11 @@ struct GoodTextEditor: View {
                     .padding(.vertical, 12)
             }
             
-            TextEditor(text: $text)
-                .padding(4)
+            ZStack {
+                TextEditor(text: $text)
+                    .padding(4)
+                Text(text).opacity(0)
+            }
             
         }
         .font(.body)

@@ -12,6 +12,7 @@
 		CF3A109D255DE0FD0053C468 /* Main.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CF3A109B255DE0FD0053C468 /* Main.xcdatamodeld */; };
 		CF3A10A1255DE35C0053C468 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A10A0255DE35C0053C468 /* DataController.swift */; };
 		CF3A10A6255DEE1B0053C468 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3A10A5255DEE1B0053C468 /* CloudKit.framework */; };
+		CF44EEB72591659E00E5C714 /* ExpandingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF44EEB62591659E00E5C714 /* ExpandingTextView.swift */; };
 		CF5BD83C253E1E7C00761335 /* CookooreeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5BD83B253E1E7C00761335 /* CookooreeApp.swift */; };
 		CF5BD83E253E1E7C00761335 /* AllRecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5BD83D253E1E7C00761335 /* AllRecipesView.swift */; };
 		CF5BD840253E1E7D00761335 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF5BD83F253E1E7D00761335 /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 		CF3A10A0255DE35C0053C468 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		CF3A10A3255DEDEA0053C468 /* Cookooree.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cookooree.entitlements; sourceTree = "<group>"; };
 		CF3A10A5255DEE1B0053C468 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		CF44EEB62591659E00E5C714 /* ExpandingTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingTextView.swift; sourceTree = "<group>"; };
 		CF5BD838253E1E7C00761335 /* Cookooree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cookooree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF5BD83B253E1E7C00761335 /* CookooreeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookooreeApp.swift; sourceTree = "<group>"; };
 		CF5BD83D253E1E7C00761335 /* AllRecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRecipesView.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				CF23A24E25535C960033E4DE /* Colors.swift */,
 				CF76811A2582A6B300E0F69C /* FilteringList.swift */,
 				CFC29308258AB1BE007A376E /* WebView.swift */,
+				CF44EEB62591659E00E5C714 /* ExpandingTextView.swift */,
 			);
 			path = "Helper Components";
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				CF95D4242561E74D00AE50F8 /* Binding-OnChange.swift in Sources */,
 				CF5BD83E253E1E7C00761335 /* AllRecipesView.swift in Sources */,
 				CFEF407125461FCA0029DEEA /* ImagePickerView.swift in Sources */,
+				CF44EEB72591659E00E5C714 /* ExpandingTextView.swift in Sources */,
 				CF3A109D255DE0FD0053C468 /* Main.xcdatamodeld in Sources */,
 				CFFA306B256843D600F23125 /* Settings.swift in Sources */,
 				CF76811B2582A6B300E0F69C /* FilteringList.swift in Sources */,

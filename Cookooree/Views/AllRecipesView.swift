@@ -46,8 +46,6 @@ struct AllRecipesView: View {
     
     var LayoutView: some View {
         
-        
-        
         var orderedRecipes: [Recipe]
         
         // filter recipes by search term BEFORE sorting
@@ -97,8 +95,6 @@ struct AllRecipesView: View {
                 
                 FloatingActionButton() {
                     self.activeSheet = .addRecipe
-                    //                    dataController.deleteAll()
-                    //                    try? dataController.createSampleData()
                 }
             }
             .sheet(item: $activeSheet) {item in
