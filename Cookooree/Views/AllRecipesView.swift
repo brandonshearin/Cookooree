@@ -87,15 +87,8 @@ struct AllRecipesView: View {
                             .padding(.horizontal)
                     }
                         LayoutView
-                    
-                    
                 }
-                
-                
                 ActionButton
-//                FloatingActionButton() {
-//                    self.activeSheet = .addRecipe
-//                }
             }
             .sheet(item: $activeSheet) {item in
                 switch item {

@@ -392,7 +392,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cookooree/Cookooree.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Cookooree/Preview Content\"";
-				DEVELOPMENT_TEAM = W2RD3Q63EX;
+				DEVELOPMENT_TEAM = H6BRYLMDLZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Cookooree/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -400,8 +400,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = brandon.Cookooree;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = udf.Cookooree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -416,7 +416,7 @@
 				CODE_SIGN_ENTITLEMENTS = Cookooree/Cookooree.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Cookooree/Preview Content\"";
-				DEVELOPMENT_TEAM = W2RD3Q63EX;
+				DEVELOPMENT_TEAM = H6BRYLMDLZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Cookooree/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -424,8 +424,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = brandon.Cookooree;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = udf.Cookooree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
