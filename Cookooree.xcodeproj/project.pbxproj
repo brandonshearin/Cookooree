@@ -391,6 +391,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Cookooree/Cookooree.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Cookooree/Preview Content\"";
 				DEVELOPMENT_TEAM = H6BRYLMDLZ;
 				ENABLE_PREVIEWS = YES;
@@ -404,7 +405,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = udf.Cookooree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -415,6 +416,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Cookooree/Cookooree.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Cookooree/Preview Content\"";
 				DEVELOPMENT_TEAM = H6BRYLMDLZ;
 				ENABLE_PREVIEWS = YES;
@@ -428,7 +430,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = udf.Cookooree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

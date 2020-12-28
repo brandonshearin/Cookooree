@@ -18,7 +18,9 @@ struct SearchBar: View {
     
     var body: some View {
         HStack {
-            TextField("Search", text: $searchString)
+            TextField("Search", text: $searchString.onChange {
+                isEditing = true
+            })
                 .padding(7)
                 .padding(.horizontal, 25)
                 .background(Color(.systemGray6))
@@ -33,6 +35,7 @@ struct SearchBar: View {
                         if isEditing {
                             Button(action: {
                                 self.searchString = ""
+                                self.isEditing = false
                             }) {
                                 Image(systemName: "multiply.circle.fill")
                                     .foregroundColor(.gray)
@@ -41,27 +44,6 @@ struct SearchBar: View {
                         }
                     }
                 )
-//                .padding(.horizontal, 10)
-                .onTapGesture {
-                    withAnimation {
-                        self.isEditing = true
-                        self.iconHidden = true
-                    }
-                }
-            
-            if isEditing {
-                Button("Cancel") {
-                    self.isEditing = false
-                    self.searchString = ""
-                    self.iconHidden = false
-                    // dismiss the keyboard
-                    self.hideKeyboard()
-
-                }
-                .padding(.trailing, 10)
-//                .transition(.move(edge: .trailing))
-                .animation(.default)
-            }
             
             Group {
                 IconSwitch(image: sortOrder == "alphabet" ? "clock" : "textformat.abc" ) {
