@@ -26,6 +26,7 @@ class DataController: ObservableObject {
                 fatalError("Fatal error loading store: \(err.localizedDescription)")
             }
         }
+        
     }
     
     static var preview: DataController = {

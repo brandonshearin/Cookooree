@@ -21,7 +21,7 @@ struct AllRecipesView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     
     @State private var activeSheet: ActiveSheet?
-    @AppStorage("layout") var layout = "Grid"
+    @AppStorage("layout") var layout = "List"
     @AppStorage("sortOrder") var sortOrder = "creationTime"
     @State private var searchString = ""
     
@@ -81,13 +81,21 @@ struct AllRecipesView: View {
                         sortOrder: $sortOrder,
                         layout: $layout,
                         searchString: $searchString)
-                    LayoutView
+                        .padding(.horizontal)
+                    if recipes.wrappedValue.count == 0 {
+                        Text("Your recipes will appear here once you have recipes.")
+                            .padding(.horizontal)
+                    }
+                        LayoutView
+                    
+                    
                 }
                 
                 
-                FloatingActionButton() {
-                    self.activeSheet = .addRecipe
-                }
+                ActionButton
+//                FloatingActionButton() {
+//                    self.activeSheet = .addRecipe
+//                }
             }
             .sheet(item: $activeSheet) {item in
                 switch item {
@@ -102,6 +110,18 @@ struct AllRecipesView: View {
                 self.activeSheet = .settings
             }))
             
+        }
+    }
+    
+    var ActionButton: some View {
+        if self.recipes.wrappedValue.count == 0 {
+            return FloatingActionButton(message: "Tap this button to create your first recipe") {
+                self.activeSheet = .addRecipe
+            }
+        } else {
+            return FloatingActionButton() {
+                self.activeSheet = .addRecipe
+            }
         }
     }
     

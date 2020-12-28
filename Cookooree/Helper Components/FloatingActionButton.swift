@@ -10,6 +10,7 @@ import SwiftUI
 struct FloatingActionButton: View {
     
     var icon: String = "plus"
+    var message: String?
     var action: () -> Void
 
     var body: some View {
@@ -18,6 +19,11 @@ struct FloatingActionButton: View {
             
             HStack {
                 Spacer()
+                if let message = message {
+                    Text(message)
+                        .frame(width: 190)
+                        .multilineTextAlignment(.trailing)
+                }
                 Button(action: {self.action()}){
                     Image(systemName: icon)
                         .frame(width: 48, height: 48)
@@ -35,7 +41,7 @@ struct FloatingActionButton: View {
 
 struct FloatingActionButton_Previews: PreviewProvider {
     static var previews: some View {
-        FloatingActionButton() {
+        FloatingActionButton(message: "Tap this button to create your first recipe") {
             
         }
     }

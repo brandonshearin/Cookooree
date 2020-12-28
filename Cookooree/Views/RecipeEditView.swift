@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 enum Mode {
     case new
@@ -131,7 +132,7 @@ struct RecipeEditView: View {
                     
                     FormInput(title: "Directions",
                               placeholder: "",
-                              field: $directions.onChange(update), height: 200)
+                              field: $directions.onChange(update))
                     
                     FormInput(title: "Total Time",
                               placeholder: "Cooking time",
@@ -272,7 +273,7 @@ extension View {
 }
 
 struct GoodTextEditor: View {
-    
+
     @Binding private var text: String
     var placeholder: String
     
@@ -284,22 +285,15 @@ struct GoodTextEditor: View {
     
     var body: some View {
         ZStack(alignment: .topLeading) {
-            
             if text.isEmpty {
                 Text(placeholder)
                     .foregroundColor(Color(UIColor.placeholderText))
                     .padding(.horizontal, 8)
-                    .padding(.vertical, 12)
+                    .padding(.vertical, 8)
             }
-            
-            ZStack {
-                TextEditor(text: $text)
-                    .padding(4)
-                Text(text).opacity(0)
-            }
-            
+            ExpandingTextView(text: $text)
+                
         }
-        .font(.body)
     }
 }
 
@@ -312,3 +306,4 @@ extension String {
         return String(self[index...])
     }
 }
+
