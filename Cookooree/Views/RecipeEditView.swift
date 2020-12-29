@@ -152,7 +152,7 @@ struct RecipeEditView: View {
                         Section {
                             Button("Delete recipe") { self.presentActionSheet.toggle()
                             }
-                            .foregroundColor(.red)
+                            .foregroundColor(Color(.systemRed))
                         }
                     }
                 }
@@ -287,7 +287,7 @@ struct GoodTextEditor: View {
         ZStack(alignment: .topLeading) {
             if text.isEmpty {
                 Text(placeholder)
-                    .foregroundColor(Color(UIColor.placeholderText))
+                    .foregroundColor(Color(.placeholderText))
                     .padding(.horizontal, 8)
                     .padding(.vertical, 8)
             }

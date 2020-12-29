@@ -51,7 +51,7 @@ struct Settings: View {
                 
                 Text("Cookooree v1.0.0")
                     .padding()
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color(.secondaryLabel))
                 Divider()
                 
                 Spacer()
@@ -92,7 +92,7 @@ struct LinkView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(l.title)
-                .foregroundColor(.blue)
+                .foregroundColor(Color(.systemBlue))
                 .padding()
             Divider()
         }
@@ -108,7 +108,7 @@ struct closeBtn: View {
         Button(action: action){
             Image(systemName: "multiply.circle.fill")
                 .imageScale(.large)
-                .foregroundColor(.gray)
+                .foregroundColor(Color(.secondaryLabel))
         }
     }
 }

@@ -28,7 +28,7 @@ struct SearchBar: View {
                 .overlay(
                     HStack {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color(.secondaryLabel))
                             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 8)
                  
@@ -38,7 +38,7 @@ struct SearchBar: View {
                                 self.isEditing = false
                             }) {
                                 Image(systemName: "multiply.circle.fill")
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(Color(.secondaryLabel))
                                     .padding(.trailing, 8)
                             }
                         }
@@ -94,15 +94,9 @@ struct IconSwitch: View {
     
     var body: some View {
         Button(action: { self.action() }) {
-//            if image == "alpha" {
-//                Image("alpha")
-//                    .imageScale(.large)
-////                    .frame(width: 44, height:44)
-//                    .padding(.leading)
-//            }
             Image(systemName: image)
                 .imageScale(.large)
-                .foregroundColor(.black)
+                .foregroundColor(Color(.label))
                 .padding(.leading)
             
         }

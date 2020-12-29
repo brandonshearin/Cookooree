@@ -56,7 +56,7 @@ struct RecipeRowView: View {
         VStack{
             HStack {
                 Text(recipe.recipeName)
-                    .foregroundColor(.black)
+                    .foregroundColor(Color(.label))
                 Spacer()
                 if let uiImage = UIImage(data: recipe.recipeImage){
                     Image(uiImage: uiImage)

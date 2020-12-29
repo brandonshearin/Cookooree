@@ -131,7 +131,7 @@ struct SettingsButton: View {
             Image(systemName: "gear")
                 .resizable()
                 .imageScale(.large)
-                .foregroundColor(.black)
+                .foregroundColor(Color(.label))
                 .padding([.vertical,.leading])
         }
     }

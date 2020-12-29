@@ -24,7 +24,7 @@ struct ImagePickerView: View {
             }) {
                 if imageIsNull(image: selectedImage) {
                     Image(systemName: "camera")
-                        .foregroundColor(.black)
+                        .foregroundColor(Color(.label))
                         .imageScale(.large)
                 } else {
                     Image(uiImage: selectedImage)

@@ -64,7 +64,7 @@ struct GridTile: View {
                     .overlay(
                         Text(recipe.recipeName)
                             .font(Font.custom("Barlow", size: 12))
-                            .foregroundColor(.black)
+                            .foregroundColor(Color(.label))
                             .padding(.leading, 8),
                         alignment: .leading
                     )
