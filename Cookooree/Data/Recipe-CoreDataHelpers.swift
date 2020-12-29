@@ -98,3 +98,18 @@ extension Recipe {
     }
     
 }
+
+//class AttributedStringToDataTransformer: ValueTransformer {
+//    override func transformedValue(_ value: Any?) -> Any? {
+//        let boxedData = NSKeyedArchiver.archivedData(withRootObject: value!,requiringSecureCoding: true)
+//        return boxedData
+//    }
+//    override func reverseTransformedValue(_ value: Any?) -> Any? {
+//        let typedBlob = value as! Data
+//        
+//        let data = NSKeyedUnarchiver.unarchivedObject(with: typedBlob)
+//        
+//        NSKeyedUnarchiver.unarchivedObject(ofClass: [NSString.self], from: typedBlob)
+//        return (data as! [String])
+//    }
+//}
