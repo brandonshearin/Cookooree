@@ -25,7 +25,7 @@ struct AllRecipesView: View {
     @AppStorage("sortOrder") var sortOrder = "creationTime"
     @State private var searchString = ""
     
-    @State private var screenOn = false
+    @AppStorage("screenOn") var screenOn = false
     
     let recipes: FetchRequest<Recipe>
     
@@ -89,6 +89,9 @@ struct AllRecipesView: View {
                         LayoutView
                 }
                 ActionButton
+            }
+            .onAppear {
+                UIApplication.shared.isIdleTimerDisabled = screenOn
             }
             .sheet(item: $activeSheet) {item in
                 switch item {
