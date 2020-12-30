@@ -21,7 +21,8 @@ enum Action {
 
 struct RecipeEditView: View {
     
-    var recipe: Recipe?
+    @State var recipe: Recipe?
+    
     let mode: Mode
     var completionHandler: ((Result<Action, Error>) -> Void)?
     
@@ -65,7 +66,7 @@ struct RecipeEditView: View {
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
         
         self.mode = mode
-        self.recipe = recipe
+        _recipe = State(wrappedValue: recipe)
         self.completionHandler = completion
         
         _name = State(wrappedValue: recipe.recipeName)
@@ -89,26 +90,23 @@ struct RecipeEditView: View {
     
     func update() {
         
-        if mode == .edit {
-            guard let recipe = self.recipe else {
-                fatalError("some weird shit happened")
-            }
-            
-            recipe.objectWillChange.send()
-            
-            recipe.name = name
-            recipe.servings = servings
-            recipe.duration = duration
-            recipe.detail = detail
-            recipe.directions = directions
-            recipe.source = source
-            
-            let trimmed = ingredientsListStr.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
-
-            let lines =  trimmed.components(separatedBy: "\n")
-            recipe.ingredients = lines
+        guard let recipe = self.recipe else {
+            fatalError("some weird shit happened")
         }
         
+        recipe.objectWillChange.send()
+        
+        recipe.name = name
+        recipe.servings = servings
+        recipe.duration = duration
+        recipe.detail = detail
+        recipe.directions = directions
+        recipe.source = source
+        
+        let trimmed = ingredientsListStr.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
+        
+        let lines =  trimmed.components(separatedBy: "\n")
+        recipe.ingredients = lines
     }
     
     var body: some View {
@@ -159,6 +157,14 @@ struct RecipeEditView: View {
                 .onTapGesture {
                     self.hideKeyboard()
                 }
+                .onAppear {
+                    if recipe == nil {
+                        print("howdy")
+                        recipe = Recipe(context: managedObjectContext)
+                        recipe?.id = UUID()
+                        recipe?.creationDate = Date()
+                    }
+                }
             }
             .padding(.vertical)
             .navigationBarTitle(mode == .new ?
@@ -187,24 +193,9 @@ struct RecipeEditView: View {
     }
     
     func handleDoneTapped(){
-        if mode == .new {
-            let recipe = Recipe(context: managedObjectContext)
-            recipe.id = UUID()
-            recipe.creationDate = Date()
-            recipe.detail = detail
-            recipe.directions = directions
-            recipe.duration = duration
-            recipe.name = name
-            recipe.servings = servings
-            recipe.source = source
-            let lines =  ingredientsListStr.components(separatedBy: "\n")
-            recipe.ingredients = lines
-            let imageData = image.jpegData(compressionQuality: 1)
-            recipe.image = imageData
-        } else {
-            let imageData = image.jpegData(compressionQuality: 1)
-            recipe?.image = imageData
-        }
+        let imageData = image.jpegData(compressionQuality: 1)
+        recipe?.image = imageData
+        
         dataController.save()
         self.presentationMode.wrappedValue.dismiss()
     }
@@ -242,7 +233,7 @@ struct FormInput: View {
     var title: String
     var placeholder: String
     @Binding var field: String
-
+    
     var height: CGFloat?
     
     var body: some View {
@@ -273,7 +264,7 @@ extension View {
 }
 
 struct GoodTextEditor: View {
-
+    
     @Binding private var text: String
     var placeholder: String
     
@@ -292,7 +283,7 @@ struct GoodTextEditor: View {
                     .padding(.vertical, 8)
             }
             ExpandingTextView(text: $text)
-                
+            
         }
     }
 }

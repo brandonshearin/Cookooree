@@ -77,6 +77,9 @@ struct AllRecipesView: View {
         NavigationView {
             ZStack {
                 VStack {
+                    Button("delete"){
+                        dataController.deleteAll()
+                    }
                     SearchBar(
                         sortOrder: $sortOrder,
                         layout: $layout,
