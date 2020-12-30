@@ -21,7 +21,7 @@ enum Action {
 
 struct RecipeEditView: View {
     
-    var recipe: Recipe?
+    var recipe: Recipe
     let mode: Mode
     var completionHandler: ((Result<Action, Error>) -> Void)?
     
@@ -45,24 +45,25 @@ struct RecipeEditView: View {
     
     @State private var ingredientsListStr: String
     
-    init() {
-        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
-        mode = .new
-        _name = State(wrappedValue: "")
-        _servings = State(wrappedValue: "")
-        _duration = State(wrappedValue: "")
-        _detail = State(wrappedValue: "")
-        _ingredients = State(wrappedValue: [String]())
-        _directions = State(wrappedValue: "")
-        _source = State(wrappedValue: "")
-        _ingredientsListStr = State(wrappedValue: "")
-        _image = State(wrappedValue: UIImage())
-    }
+//    init() {
+//        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
+//        mode = .new
+//        _name = State(wrappedValue: "")
+//        _servings = State(wrappedValue: "")
+//        _duration = State(wrappedValue: "")
+//        _detail = State(wrappedValue: "")
+//        _ingredients = State(wrappedValue: [String]())
+//        _directions = State(wrappedValue: "")
+//        _source = State(wrappedValue: "")
+//        _ingredientsListStr = State(wrappedValue: "")
+//        _image = State(wrappedValue: UIImage())
+//    }
     
     init(recipe: Recipe,
          mode: Mode = .new,
          completion: ((Result<Action, Error>) -> Void)?) {
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
+        
         
         self.mode = mode
         self.recipe = recipe
@@ -89,10 +90,10 @@ struct RecipeEditView: View {
     
     func update() {
         
-        if mode == .edit {
-            guard let recipe = self.recipe else {
-                fatalError("some weird shit happened")
-            }
+//        if mode == .edit {
+//            guard let recipe = self.recipe else {
+//                fatalError("some weird shit happened")
+//            }
             
             recipe.objectWillChange.send()
             
@@ -104,10 +105,10 @@ struct RecipeEditView: View {
             recipe.source = source
             
             let trimmed = ingredientsListStr.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
-
+            
             let lines =  trimmed.components(separatedBy: "\n")
             recipe.ingredients = lines
-        }
+//        }
         
     }
     
@@ -163,7 +164,7 @@ struct RecipeEditView: View {
             .padding(.vertical)
             .navigationBarTitle(mode == .new ?
                                     "New Recipe" :
-                                    recipe?.recipeName ?? "")
+                                    recipe.recipeName ?? "")
             .navigationBarTitleDisplayMode(.inline )
             .navigationBarItems(leading:
                                     Button("Cancel"){
@@ -187,32 +188,32 @@ struct RecipeEditView: View {
     }
     
     func handleDoneTapped(){
-        if mode == .new {
-            let recipe = Recipe(context: managedObjectContext)
-            recipe.id = UUID()
-            recipe.creationDate = Date()
-            recipe.detail = detail
-            recipe.directions = directions
-            recipe.duration = duration
-            recipe.name = name
-            recipe.servings = servings
-            recipe.source = source
-            let lines =  ingredientsListStr.components(separatedBy: "\n")
-            recipe.ingredients = lines
-            let imageData = image.jpegData(compressionQuality: 1)
-            recipe.image = imageData
-        } else {
-            let imageData = image.jpegData(compressionQuality: 1)
-            recipe?.image = imageData
-        }
+//        if mode == .new {
+//            let recipe = Recipe(context: RecipeEditView.managedObjectContext)
+//            recipe.id = UUID()
+//            recipe.creationDate = Date()
+//            recipe.detail = detail
+//            recipe.directions = directions
+//            recipe.duration = duration
+//            recipe.name = name
+//            recipe.servings = servings
+//            recipe.source = source
+//            let lines =  ingredientsListStr.components(separatedBy: "\n")
+//            recipe.ingredients = lines
+//            let imageData = image.jpegData(compressionQuality: 1)
+//            recipe.image = imageData
+//        } else {
+//            let imageData = image.jpegData(compressionQuality: 1)
+//            recipe?.image = imageData
+//        }
         dataController.save()
         self.presentationMode.wrappedValue.dismiss()
     }
     
     func handleDeleteTapped() {
-        if let recipe = recipe {
+//        if let recipe = recipe {
             dataController.delete(recipe)
-        }
+//        }
         dataController.save()
         self.dismiss()
         self.completionHandler?(.success(.delete))
@@ -260,12 +261,6 @@ struct FormInput: View {
     }
 }
 
-extension String {
-    var isBlank: Bool {
-        return allSatisfy({ $0.isWhitespace })
-    }
-}
-
 extension View {
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
@@ -297,13 +292,4 @@ struct GoodTextEditor: View {
     }
 }
 
-
-extension String {
-    func removingLeadingSpaces() -> String {
-        guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
-            return self
-        }
-        return String(self[index...])
-    }
-}
 

@@ -21,6 +21,7 @@ struct AllRecipesView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     
     @State private var activeSheet: ActiveSheet?
+    @State private var showing: Bool = false
     @AppStorage("layout") var layout = "List"
     @AppStorage("sortOrder") var sortOrder = "creationTime"
     @State private var searchString = ""
@@ -77,6 +78,9 @@ struct AllRecipesView: View {
         NavigationView {
             ZStack {
                 VStack {
+                    Button("Delete"){
+                        dataController.deleteAll()
+                    }
                     SearchBar(
                         sortOrder: $sortOrder,
                         layout: $layout,
@@ -88,19 +92,28 @@ struct AllRecipesView: View {
                     }
                         LayoutView
                 }
-                ActionButton
+//                ActionButton
+                FloatingActionButton() {
+                    print("two")
+                    self.showing = true
+                }
             }
             .onAppear {
                 UIApplication.shared.isIdleTimerDisabled = screenOn
             }
-            .sheet(item: $activeSheet) {item in
-                switch item {
-                case .addRecipe:
-                    RecipeEditView()
-                case .settings:
-                    Settings(screenOn: $screenOn)
-                }
+            .sheet(isPresented: $showing){
+                RecipeEditView(recipe: Recipe(context: managedObjectContext)) { _ in
+                                    }
             }
+//            .sheet(item: $activeSheet) {item in
+//                switch item {
+//                case .addRecipe:
+//                    RecipeEditView(recipe: Recipe(context: managedObjectContext)) { _ in
+//                    }
+//                case .settings:
+//                    Settings(screenOn: $screenOn)
+//                }
+//            }
             .navigationBarTitle("cookooree", displayMode: .inline)
             .navigationBarItems(leading: SettingsButton(action: {
                 self.activeSheet = .settings
@@ -111,12 +124,16 @@ struct AllRecipesView: View {
     
     var ActionButton: some View {
         if self.recipes.wrappedValue.count == 0 {
+            print("one")
             return FloatingActionButton(message: "Tap this button to create your first recipe") {
                 self.activeSheet = .addRecipe
+                
             }
         } else {
+            print("two")
             return FloatingActionButton() {
-                self.activeSheet = .addRecipe
+//                self.activeSheet = .addRecipe
+                self.showing = true
             }
         }
     }
