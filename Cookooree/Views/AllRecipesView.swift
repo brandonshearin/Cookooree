@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct AllRecipesView: View {
     
@@ -27,49 +28,27 @@ struct AllRecipesView: View {
     
     @AppStorage("screenOn") var screenOn = false
     
-    let recipes: FetchRequest<Recipe>
-    
+    @FetchRequest(
+        entity: Recipe.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Recipe.creationDate, ascending: false)]
+    )
+    var recipes: FetchedResults<Recipe>
+
     init() {
         UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
-        recipes = FetchRequest<Recipe>(
-            entity: Recipe.entity(),
-            sortDescriptors: [NSSortDescriptor(keyPath: \Recipe.creationDate, ascending: false)])
     }
     
     var LayoutView: some View {
         
-        var orderedRecipes: [Recipe]
-        
-        // filter recipes by search term BEFORE sorting
-        var filteredRecipes: [FetchedResults<Recipe>.Element]
-        if searchString.isEmpty {
-            filteredRecipes = recipes.wrappedValue.map{ $0 }
-        } else {
-            filteredRecipes = recipes.wrappedValue.filter { element in
-                Recipe.filterKeyPaths.contains {
-                    element[keyPath: $0]
-                        .localizedCaseInsensitiveContains(searchString)
-                }
-            }
-        }
-        
-        
-        if sortOrder == "creationTime" {
-            orderedRecipes = filteredRecipes.sorted {
-                $0.recipeCreationDate > $1.recipeCreationDate
-            }
-        } else {
-            orderedRecipes = filteredRecipes.sorted {
-                $0.recipeName < $1.recipeName
-            }
-        }
+        let filteredRecipes = Recipe.search(searchString, recipes)
+        let sortedRecipes = Recipe.sort(sortOrder, filteredRecipes)
         
         if layout == "Grid" {
             return AnyView(
-                RecipeGridView(recipes: orderedRecipes))
+                RecipeGridView(recipes: sortedRecipes))
         } else {
             return AnyView(
-                RecipeListView(recipes: orderedRecipes))
+                RecipeListView(recipes: sortedRecipes))
         }
     }
     
@@ -82,7 +61,7 @@ struct AllRecipesView: View {
                         layout: $layout,
                         searchString: $searchString)
                         .padding(.horizontal)
-                    if recipes.wrappedValue.count == 0 {
+                    if recipes.count == 0 {
                         Text("Your recipes will appear here once you have recipes.")
                             .padding(.horizontal)
                     }
@@ -110,7 +89,7 @@ struct AllRecipesView: View {
     }
     
     var ActionButton: some View {
-        if self.recipes.wrappedValue.count == 0 {
+        if self.recipes.count == 0 {
             return FloatingActionButton(message: "Tap this button to create your first recipe") {
                 self.activeSheet = .addRecipe
             }

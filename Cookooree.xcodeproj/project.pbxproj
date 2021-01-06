@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CF23A24F25535C960033E4DE /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF23A24E25535C960033E4DE /* Colors.swift */; };
+		CF29C05225A67F8600F040AD /* PreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF29C05125A67F8600F040AD /* PreviewData.swift */; };
 		CF2EA54E2547629D00D3A584 /* FloatingActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2EA54D2547629D00D3A584 /* FloatingActionButton.swift */; };
 		CF3A109D255DE0FD0053C468 /* Main.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CF3A109B255DE0FD0053C468 /* Main.xcdatamodeld */; };
 		CF3A10A1255DE35C0053C468 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3A10A0255DE35C0053C468 /* DataController.swift */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		CF23A24E25535C960033E4DE /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		CF29C05125A67F8600F040AD /* PreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewData.swift; sourceTree = "<group>"; };
 		CF2EA54D2547629D00D3A584 /* FloatingActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionButton.swift; sourceTree = "<group>"; };
 		CF3A109C255DE0FD0053C468 /* Main.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Main.xcdatamodel; sourceTree = "<group>"; };
 		CF3A10A0255DE35C0053C468 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				CF3A10A0255DE35C0053C468 /* DataController.swift */,
 				CF95D4202561C57C00AE50F8 /* Recipe-CoreDataHelpers.swift */,
 				CF95D4232561E74D00AE50F8 /* Binding-OnChange.swift */,
+				CF29C05125A67F8600F040AD /* PreviewData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF29C05225A67F8600F040AD /* PreviewData.swift in Sources */,
 				CF863613254638AA00421133 /* RemoteImage.swift in Sources */,
 				CF95D4212561C57C00AE50F8 /* Recipe-CoreDataHelpers.swift in Sources */,
 				CFEF40682544F8470029DEEA /* RecipeDetailsView.swift in Sources */,
