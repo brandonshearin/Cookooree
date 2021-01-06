@@ -77,9 +77,6 @@ struct AllRecipesView: View {
         NavigationView {
             ZStack {
                 VStack {
-                    Button("delete"){
-                        dataController.deleteAll()
-                    }
                     SearchBar(
                         sortOrder: $sortOrder,
                         layout: $layout,
@@ -108,8 +105,8 @@ struct AllRecipesView: View {
             .navigationBarItems(leading: SettingsButton(action: {
                 self.activeSheet = .settings
             }))
-            
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
     
     var ActionButton: some View {

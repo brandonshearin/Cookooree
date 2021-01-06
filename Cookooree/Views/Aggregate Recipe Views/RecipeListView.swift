@@ -15,7 +15,7 @@ struct RecipeListView: View {
     @EnvironmentObject var dataController: DataController
     
     var body: some View {
-        ScrollView {
+        List {
             ForEach(recipes) { recipe in
                 NavigationLink(destination: RecipeDetailsView(recipe: recipe)){
                     RecipeRowView(recipe: recipe)
@@ -72,7 +72,6 @@ struct RecipeRowView: View {
                         .foregroundColor(.clear)
                 }
             }
-            Divider()
         }
        
     }
