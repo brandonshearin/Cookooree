@@ -69,7 +69,7 @@ struct AllRecipesView: View {
                 RecipeGridView(recipes: orderedRecipes))
         } else {
             return AnyView(
-                RecipeListView(recipes: orderedRecipes, sortOrder: sortOrder))
+                RecipeListView(recipes: orderedRecipes))
         }
     }
     

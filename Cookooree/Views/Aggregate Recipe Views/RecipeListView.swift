@@ -10,7 +10,6 @@ import SwiftUI
 struct RecipeListView: View {
     
     var recipes: [Recipe]
-    var sortOrder: String
     
     @EnvironmentObject var dataController: DataController
     
@@ -42,7 +41,7 @@ struct RecipeListView_Previews: PreviewProvider {
     
     static var previews: some View {
         NavigationView{
-            RecipeListView(recipes: [Recipe.example, Recipe.example, Recipe.example, Recipe.example], sortOrder: "alphabet")
+            RecipeListView(recipes: [Recipe.example, Recipe.example, Recipe.example, Recipe.example])
                 .environmentObject(dataController)
         }
     }
@@ -53,7 +52,7 @@ struct RecipeRowView: View {
     @ObservedObject var recipe: Recipe
     
     var body: some View {
-        VStack{
+
             HStack {
                 Text(recipe.recipeName)
                     .foregroundColor(Color(.label))
@@ -72,7 +71,6 @@ struct RecipeRowView: View {
                         .foregroundColor(.clear)
                 }
             }
-        }
        
     }
 }
