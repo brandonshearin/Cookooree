@@ -21,10 +21,18 @@ class DataController: ObservableObject {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
         
-        container.loadPersistentStores {storeDescription, err in
+        container.loadPersistentStores { storeDescription, err in
+            storeDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+            storeDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+            storeDescription.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.udf.Cookooree")
+            
             if let err = err {
                 fatalError("Fatal error loading store: \(err.localizedDescription)")
             }
+            
+            self.container.viewContext.automaticallyMergesChangesFromParent = true
+            self.container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            
         }
         
     }
