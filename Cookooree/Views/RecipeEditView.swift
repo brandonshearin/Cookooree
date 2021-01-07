@@ -23,7 +23,7 @@ struct RecipeEditView: View {
     
     @State var recipe: Recipe?
     
-    let mode: Mode
+    var mode: Mode
     var completionHandler: ((Result<Action, Error>) -> Void)?
     
     @Environment(\.presentationMode) private var presentationMode
@@ -33,41 +33,40 @@ struct RecipeEditView: View {
     
     @State private var presentActionSheet = false
     
-    @State private var name: String
-    @State private var servings: String
-    @State private var duration: String
+    @State private var name =  ""
+    @State private var servings = ""
+    @State private var duration = ""
     
-    @State private var detail: String
-    @State private var ingredients: [String]
-    @State private var directions: String
-    @State private var source: String
+    @State private var detail = ""
+    @State private var ingredients = [String]()
+    @State private var directions = ""
+    @State private var source = ""
     
-    @State private var image: UIImage
+    @State private var image = UIImage()
     
-    @State private var ingredientsListStr: String
+    @State private var ingredientsListStr = ""
     
     init() {
-        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
+        UINavigationBar
+            .appearance()
+            .titleTextAttributes =
+            [.font : UIFont(name: "Barlow-Black", size: 21)!]
+        
         mode = .new
-        _name = State(wrappedValue: "")
-        _servings = State(wrappedValue: "")
-        _duration = State(wrappedValue: "")
-        _detail = State(wrappedValue: "")
-        _ingredients = State(wrappedValue: [String]())
-        _directions = State(wrappedValue: "")
-        _source = State(wrappedValue: "")
-        _ingredientsListStr = State(wrappedValue: "")
-        _image = State(wrappedValue: UIImage())
     }
     
     init(recipe: Recipe,
          mode: Mode = .new,
          completion: ((Result<Action, Error>) -> Void)?) {
-        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "Barlow-Black", size: 21)!]
+        
+        UINavigationBar
+            .appearance()
+            .titleTextAttributes =
+            [.font : UIFont(name: "Barlow-Black", size: 21)!]
         
         self.mode = mode
         _recipe = State(wrappedValue: recipe)
-        self.completionHandler = completion
+        completionHandler = completion
         
         _name = State(wrappedValue: recipe.recipeName)
         _servings = State(wrappedValue: recipe.recipeServings)
@@ -159,45 +158,56 @@ struct RecipeEditView: View {
                 }
                 .onAppear {
                     if recipe == nil {
-                        print("howdy")
                         recipe = Recipe(context: managedObjectContext)
                         recipe?.id = UUID()
                         recipe?.creationDate = Date()
                     }
                 }
+                .onDisappear {
+                    if recipe?.recipeName == "" {
+                        if let recipe = recipe {
+                            recipe.objectWillChange.send()
+                            self.dataController.delete(recipe)
+                            self.dataController.save()
+                        }
+                        
+                    }
+                }
             }
             .padding(.vertical)
-            .navigationBarTitle(mode == .new ?
-                                    "New Recipe" :
-                                    recipe?.recipeName ?? "")
+            .navigationBarTitle(screenTitle)
             .navigationBarTitleDisplayMode(.inline )
-            .navigationBarItems(leading:
-                                    Button("Cancel"){
-                                        self.handleCancelTapped()
-                                    },
-                                trailing:
-                                    Button(mode == .new ? "Save": "Done") {
-                                        self.handleDoneTapped()
-                                    }
-                                    .disabled(name.isEmpty))
+            .navigationBarItems(leading: cancelButton, trailing: doneButton)
             .alert(isPresented: $presentActionSheet) {
-                Alert(title: Text("Are you sure?"),
-                      primaryButton: .destructive(Text("Delete Recipe"), action: { self.handleDeleteTapped() }), secondaryButton: .cancel())
+                Alert(
+                    title: Text("Are you sure?"),
+                    primaryButton: .destructive(Text("Delete Recipe"),
+                    action: { self.handleDeleteTapped() }),
+                    secondaryButton: .cancel())
             }
         }
     }
     
-    func handleCancelTapped(){
-        managedObjectContext.rollback()
-        dismiss()
+    var screenTitle : String {
+        mode == .new ? "New Recipe" : recipe?.recipeName ?? ""
     }
     
-    func handleDoneTapped(){
-        let imageData = image.jpegData(compressionQuality: 1)
-        recipe?.image = imageData
-        
-        dataController.save()
-        self.presentationMode.wrappedValue.dismiss()
+    var cancelButton: some View {
+        Button("Cancel") {
+            managedObjectContext.rollback()
+            dismiss()
+        }
+    }
+    
+    var doneButton: some View {
+        Button(mode == .new ? "Save": "Done") {
+            let imageData = image.jpegData(compressionQuality: 1)
+            recipe?.image = imageData
+            
+            dataController.save()
+            dismiss()
+        }
+        .disabled(name.isEmpty)
     }
     
     func handleDeleteTapped() {

@@ -29,7 +29,6 @@ struct RecipeListView: View {
                 
                 dataController.save()
             }
-            .padding(.horizontal)
         }
         
     }

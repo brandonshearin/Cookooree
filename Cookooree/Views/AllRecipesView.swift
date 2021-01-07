@@ -76,6 +76,7 @@ struct AllRecipesView: View {
                 switch item {
                 case .addRecipe:
                     RecipeEditView()
+                        .environmentObject(dataController)
                 case .settings:
                     Settings(screenOn: $screenOn)
                 }
