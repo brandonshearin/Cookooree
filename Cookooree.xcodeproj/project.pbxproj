@@ -85,6 +85,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CF40EA4725AB53FB00C108C0 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				CF3A109B255DE0FD0053C468 /* Main.xcdatamodeld */,
+				CF5BD84C253E20C400761335 /* GoogleService-Info.plist */,
+				CF5BD844253E1E7D00761335 /* Info.plist */,
+				CF3A10A3255DEDEA0053C468 /* Cookooree.entitlements */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		CF40EA4E25AB54B800C108C0 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CF3A10A0255DE35C0053C468 /* DataController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		CF5BD82F253E1E7C00761335 = {
 			isa = PBXGroup;
 			children = (
@@ -105,14 +124,13 @@
 		CF5BD83A253E1E7C00761335 /* Cookooree */ = {
 			isa = PBXGroup;
 			children = (
-				CF3A10A3255DEDEA0053C468 /* Cookooree.entitlements */,
 				CF5BD83B253E1E7C00761335 /* CookooreeApp.swift */,
-				CF95D41E2561C54500AE50F8 /* Data */,
 				CFEF40632544F8240029DEEA /* Views */,
+				CF40EA4E25AB54B800C108C0 /* Controllers */,
+				CF40EA4725AB53FB00C108C0 /* Configuration */,
+				CF95D41E2561C54500AE50F8 /* Extensions */,
 				CF863615254638B300421133 /* Helper Components */,
 				CF5BD83F253E1E7D00761335 /* Assets.xcassets */,
-				CF5BD844253E1E7D00761335 /* Info.plist */,
-				CF5BD84C253E20C400761335 /* GoogleService-Info.plist */,
 				CF5BD841253E1E7D00761335 /* Preview Content */,
 				CFEF406D2545BCE50029DEEA /* Barlow-Black.ttf */,
 			);
@@ -132,7 +150,6 @@
 			children = (
 				CF863612254638AA00421133 /* RemoteImage.swift */,
 				CF2EA54D2547629D00D3A584 /* FloatingActionButton.swift */,
-				CF23A24E25535C960033E4DE /* Colors.swift */,
 				CF76811A2582A6B300E0F69C /* FilteringList.swift */,
 				CFC29308258AB1BE007A376E /* WebView.swift */,
 				CF44EEB62591659E00E5C714 /* ExpandingTextView.swift */,
@@ -140,16 +157,15 @@
 			path = "Helper Components";
 			sourceTree = "<group>";
 		};
-		CF95D41E2561C54500AE50F8 /* Data */ = {
+		CF95D41E2561C54500AE50F8 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CF3A109B255DE0FD0053C468 /* Main.xcdatamodeld */,
-				CF3A10A0255DE35C0053C468 /* DataController.swift */,
 				CF95D4202561C57C00AE50F8 /* Recipe-CoreDataHelpers.swift */,
 				CF95D4232561E74D00AE50F8 /* Binding-OnChange.swift */,
 				CF29C05125A67F8600F040AD /* PreviewData.swift */,
+				CF23A24E25535C960033E4DE /* Colors.swift */,
 			);
-			path = Data;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		CFEE475425520E8700D11068 /* Aggregate Recipe Views */ = {
@@ -393,19 +409,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Cookooree/Cookooree.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Cookooree/Configuration/Cookooree.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Cookooree/Preview Content\"";
 				DEVELOPMENT_TEAM = H6BRYLMDLZ;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Cookooree/Info.plist;
+				INFOPLIST_FILE = Cookooree/Configuration/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = udf.Cookooree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -418,19 +434,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Cookooree/Cookooree.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Cookooree/Configuration/Cookooree.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Cookooree/Preview Content\"";
 				DEVELOPMENT_TEAM = H6BRYLMDLZ;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Cookooree/Info.plist;
+				INFOPLIST_FILE = Cookooree/Configuration/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = udf.Cookooree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
